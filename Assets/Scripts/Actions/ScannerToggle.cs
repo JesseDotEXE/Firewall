@@ -21,7 +21,7 @@ public class ScannerToggle : MonoBehaviour
 	void Update () 
     {
 
-	}
+    }
 
     public void CloseScanner() 
     {
@@ -44,42 +44,47 @@ public class ScannerToggle : MonoBehaviour
     
     void OnMouseDown()
     {
+        CheckScanners();
+    }
+
+    void CheckScanners()
+    {
         //If layer if on then turn off.
-        if(gameObject.layer == LayerMask.NameToLayer("SecurityRed"))
+        if (gameObject.layer == LayerMask.NameToLayer("SecurityRed"))
         {
-            scannerRenderer.enabled = false;
-            gameObject.layer = LayerMask.NameToLayer("SecurityRedOff");
+            ToggleScanner(false, "SecurityRedOff");
         }
 
         else if (gameObject.layer == LayerMask.NameToLayer("SecurityGreen"))
         {
-            scannerRenderer.enabled = false;
-            gameObject.layer = LayerMask.NameToLayer("SecurityGreenOff");
+            ToggleScanner(false, "SecurityGreenOff");
         }
 
         else if (gameObject.layer == LayerMask.NameToLayer("SecurityBlue"))
         {
-            scannerRenderer.enabled = false;
-            gameObject.layer = LayerMask.NameToLayer("SecurityBlueOff");
+            ToggleScanner(false, "SecurityBlueOff");
         }
 
         //If the layer is already off, turn back on.
         else if (gameObject.layer == LayerMask.NameToLayer("SecurityRedOff"))
         {
-            scannerRenderer.enabled = true;
-            gameObject.layer = LayerMask.NameToLayer("SecurityRed");
+            ToggleScanner(true, "SecurityRed");
         }
 
         else if (gameObject.layer == LayerMask.NameToLayer("SecurityGreenOff"))
         {
-            scannerRenderer.enabled = true;
-            gameObject.layer = LayerMask.NameToLayer("SecurityGreen");
+            ToggleScanner(true, "SecurityGreen");
         }
 
         else if (gameObject.layer == LayerMask.NameToLayer("SecurityBlueOff"))
         {
-            scannerRenderer.enabled = true;
-            gameObject.layer = LayerMask.NameToLayer("SecurityBlue");
-        }        
+            ToggleScanner(true, "SecurityBlue");
+        }
+    }
+
+    void ToggleScanner(bool renderOn, string layerName)
+    {
+        scannerRenderer.enabled = renderOn;
+        gameObject.layer = LayerMask.NameToLayer(layerName);
     }
 }
