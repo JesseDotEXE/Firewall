@@ -9,8 +9,8 @@ public class SpawnManager : MonoBehaviour
     public GameObject spawner3;
     public GameObject spawner4;
     public GameObject dataPacket;
-    public int difficultyLevel;
 
+    private GlobalData globalData;
     private List<int> spawnList; 
     private float objSpeed;
     private float spawnInterval;
@@ -24,6 +24,11 @@ public class SpawnManager : MonoBehaviour
     private Vector3 spawnPoint4;
     private bool stopSpawning;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
+
     // Use this for initialization
     void Start () 
     {
@@ -34,7 +39,8 @@ public class SpawnManager : MonoBehaviour
         spawnPoint2 = spawner2.GetComponent<Transform>().position;
         spawnPoint3 = spawner3.GetComponent<Transform>().position;
         spawnPoint4 = spawner4.GetComponent<Transform>().position;
-        SetDifficulty();
+        globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
+        SetDifficulty(globalData.difficulty);
         PopulateList(30);
         InvokeRepeating("SpawnObject", 3f, spawnInterval);
     }
@@ -50,27 +56,34 @@ public class SpawnManager : MonoBehaviour
 
     //Might eventually set from a "Game" Manager class.
     //Still needs some work but overall okay for testing now. 
-    void SetDifficulty() 
+    void SetDifficulty(int difficulty) 
     {
-        if (difficultyLevel == 1) 
+        if (difficulty == 1) 
         {
             objSpeed = 2.5f;
             spawnInterval = 2.5f;
             singlePortPercent = 90.0f;
             doublePortPercent = 100.0f;
         } 
-        else if (difficultyLevel == 2) 
+        else if (difficulty == 2) 
         {
             objSpeed = 3.0f;
             spawnInterval = 1.5f;
             singlePortPercent = 70.0f;
             doublePortPercent = 100.0f;
         } 
-        else if (difficultyLevel == 3) 
+        else if (difficulty == 3) 
         {
             objSpeed = 4.0f;
             spawnInterval = 1.0f;
             singlePortPercent = 50.0f;
+            doublePortPercent = 100.0f;
+        }
+        else
+        {
+            objSpeed = 2.5f;
+            spawnInterval = 2.5f;
+            singlePortPercent = 90.0f;
             doublePortPercent = 100.0f;
         }
     }

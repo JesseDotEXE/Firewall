@@ -11,6 +11,7 @@ public class GameMode : MonoBehaviour
 	// Use this for initialization
 	void Awake () 
     {
+        DontDestroyOnLoad(transform.gameObject);
         scoreManager = GetComponent<ScoreManager>();
         spawnManager = GetComponent<SpawnManager>();
         globalData = GetComponent<GlobalData>();
