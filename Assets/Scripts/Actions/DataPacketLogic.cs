@@ -104,6 +104,7 @@ public class DataPacketLogic : MonoBehaviour
             else 
             {
                 gameMode.GetScoreManager().DecreaseLives();
+                Debug.Log("Taking away lives!");
             }
         }
     }
