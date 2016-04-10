@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class StartButtonLogic : MonoBehaviour 
 {
@@ -17,6 +18,6 @@ public class StartButtonLogic : MonoBehaviour
 
     public void OnClick()
     {
-        Application.LoadLevel("ColorPrototype");
+        SceneManager.LoadScene("ColorPrototype");
     }
 }

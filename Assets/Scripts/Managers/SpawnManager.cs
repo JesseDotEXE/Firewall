@@ -8,10 +8,10 @@ public class SpawnManager : MonoBehaviour
     public GameObject spawner1;
     public GameObject spawner2;
     public GameObject spawner3;
-    public GameObject spawner4;
+    // public GameObject spawner4;
     public GameObject dataPacket;
 
-    private GlobalData globalData;
+    private GameMode gameMode;
     private List<int> spawnList; 
     private float objSpeed;
     private float spawnInterval;
@@ -19,10 +19,11 @@ public class SpawnManager : MonoBehaviour
     //private float doublePortPercent;
     //private float triplePortPercent;
     private System.Random rand;
+    private int numSpawnPoints;
     private Vector3 spawnPoint1;
     private Vector3 spawnPoint2;
     private Vector3 spawnPoint3;
-    private Vector3 spawnPoint4;
+    //private Vector3 spawnPoint4;
     private bool stopSpawning;
 
     void Awake()
@@ -33,25 +34,30 @@ public class SpawnManager : MonoBehaviour
     // Use this for initialization
     void Start () 
     {
+        gameMode = GetComponent<GameMode>();
         stopSpawning = false;
         spawnList = new List<int>();
         rand = new System.Random();
+        numSpawnPoints = 3;
         spawnPoint1 = spawner1.GetComponent<Transform>().position;
         spawnPoint2 = spawner2.GetComponent<Transform>().position;
         spawnPoint3 = spawner3.GetComponent<Transform>().position;
-        spawnPoint4 = spawner4.GetComponent<Transform>().position;
-        ReadGlobalData();
+        UpdateDifficulty();
         PopulateList(30);
         InvokeRepeating("SpawnObject", 3f, spawnInterval);
     }
 
-    private void ReadGlobalData()
+    public void UpdateDifficulty()
     {
-        globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
-        objSpeed = globalData.objMoveSpeed;
-        spawnInterval = globalData.spawnInterval;
-        singlePortPercent = globalData.singlePortPercent;
-        //SetDifficulty(globalData.difficulty);
+        objSpeed = gameMode.GetCurrentObjSpeed();
+        spawnInterval = gameMode.GetCurrentSpawnInterval();
+        singlePortPercent = gameMode.GetCurrentSinglePortPercentage();
+
+        Debug.Log("Increasing Game Difficulty-----------------");
+        Debug.Log("Object Speed: " + objSpeed);
+        Debug.Log("Spawn Interval: " + spawnInterval);
+        Debug.Log("Single Port Percentage: " + singlePortPercent);
+
     }
 
     // Update is called once per frame
@@ -60,41 +66,6 @@ public class SpawnManager : MonoBehaviour
         if (stopSpawning)
         {
             CancelInvoke("SpawnObject");
-        }
-    }
-
-    //Might eventually set from a "Game" Manager class.
-    //Still needs some work but overall okay for testing now. 
-    //Not being used at the moment until I find the values I want.
-    void SetDifficulty(int difficulty) 
-    {
-        if (difficulty == 1) 
-        {
-            objSpeed = 2.5f;
-            spawnInterval = 2.5f;
-            singlePortPercent = 90.0f;
-            //doublePortPercent = 100.0f;
-        } 
-        else if (difficulty == 2) 
-        {
-            objSpeed = 3.0f;
-            spawnInterval = 1.5f;
-            singlePortPercent = 70.0f;
-            //doublePortPercent = 100.0f;
-        } 
-        else if (difficulty == 3) 
-        {
-            objSpeed = 4.0f;
-            spawnInterval = 1.0f;
-            singlePortPercent = 50.0f;
-            //doublePortPercent = 100.0f;
-        }
-        else
-        {
-            objSpeed = 2.5f;
-            spawnInterval = 2.5f;
-            singlePortPercent = 90.0f;
-            //doublePortPercent = 100.0f;
         }
     }
 
@@ -108,7 +79,7 @@ public class SpawnManager : MonoBehaviour
 
     void AddToList() 
     {
-        int port = rand.Next(4) + 1;
+        int port = rand.Next(numSpawnPoints) + 1;
         spawnList.Add(port);
     }
 
@@ -128,11 +99,10 @@ public class SpawnManager : MonoBehaviour
             if (portToUse == 1) { SpawnDataPacket(spawnPoint1); }
             if (portToUse == 2) { SpawnDataPacket(spawnPoint2); }
             if (portToUse == 3) { SpawnDataPacket(spawnPoint3); }
-            if (portToUse == 4) { SpawnDataPacket(spawnPoint4); }
 
             spawnList.RemoveAt(0);
         } 
-        else //if(numPorts >= singlePortPercent && numPorts < doublePortPercent) 
+        else 
         {
             //Spawn into 2 queues.
             int portToUse1 = spawnList[0];
@@ -144,12 +114,12 @@ public class SpawnManager : MonoBehaviour
                 int plusOrMin = rand.Next(2);
                 if (plusOrMin == 0)
                 {
-                    if (portToUse1 == 1) { portToUse2 = 4; }
+                    if (portToUse1 == 1) { portToUse2 = 3; }
                     else portToUse2--;
                 }
                 else
                 {
-                    if (portToUse1 == 4) { portToUse2 = 1; }
+                    if (portToUse1 == 3) { portToUse2 = 1; }
                     else portToUse2++;
                 }
             }
@@ -157,12 +127,10 @@ public class SpawnManager : MonoBehaviour
             if (portToUse1 == 1) { SpawnDataPacket(spawnPoint1); }
             if (portToUse1 == 2) { SpawnDataPacket(spawnPoint2); }
             if (portToUse1 == 3) { SpawnDataPacket(spawnPoint3); }
-            if (portToUse1 == 4) { SpawnDataPacket(spawnPoint4); }
 
             if (portToUse2 == 1) { SpawnDataPacket(spawnPoint1); }
             if (portToUse2 == 2) { SpawnDataPacket(spawnPoint2); }
             if (portToUse2 == 3) { SpawnDataPacket(spawnPoint3); }
-            if (portToUse2 == 4) { SpawnDataPacket(spawnPoint4); }
 
             spawnList.RemoveAt(0);
             spawnList.RemoveAt(0);

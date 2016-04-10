@@ -11,7 +11,7 @@ public class DifficultyTextLogic : MonoBehaviour
     void Start () 
     {
         diffText = gameObject.GetComponent<Text>();
-        difficulty = 1;
+        difficulty = 0;
 	}
 	
 	// Update is called once per frame
