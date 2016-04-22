@@ -145,11 +145,13 @@ public class DataPacketLogic : MonoBehaviour
             if(colorRemoved == (int)PacketColors.Green)
             {
                 //Bad Stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
 
             if (colorRemoved == (int)PacketColors.Blue)
             {
                 //Bad Stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
         }
 
@@ -159,6 +161,7 @@ public class DataPacketLogic : MonoBehaviour
             if (colorRemoved == (int)PacketColors.Red)
             {
                 //Bad stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
 
             if (colorRemoved == (int)PacketColors.Green)
@@ -170,6 +173,7 @@ public class DataPacketLogic : MonoBehaviour
             if (colorRemoved == (int)PacketColors.Blue)
             {
                 //Bad Stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
         }
 
@@ -179,11 +183,13 @@ public class DataPacketLogic : MonoBehaviour
             if (colorRemoved == (int)PacketColors.Red)
             {
                 //Bad stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
 
             if (colorRemoved == (int)PacketColors.Green)
             {
                 //Bad stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
 
             if (colorRemoved == (int)PacketColors.Blue)
@@ -211,6 +217,7 @@ public class DataPacketLogic : MonoBehaviour
             if (colorRemoved == (int)PacketColors.Blue)
             {
                 //Bad stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
         }
 
@@ -226,6 +233,7 @@ public class DataPacketLogic : MonoBehaviour
             if (colorRemoved == (int)PacketColors.Green)
             {
                 //Bad stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
 
             if (colorRemoved == (int)PacketColors.Blue)
@@ -241,6 +249,7 @@ public class DataPacketLogic : MonoBehaviour
             if (colorRemoved == (int)PacketColors.Red)
             {
                 //Bad stuff
+                gameMode.GetScoreManager().DecreaseLives();
             }
 
             if (colorRemoved == (int)PacketColors.Green)
