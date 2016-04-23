@@ -11,6 +11,14 @@ public class SpawnManager : MonoBehaviour
     // public GameObject spawner4;
     public GameObject dataPacket;
 
+    public Sprite three;
+    public Sprite four;
+    public Sprite five;
+    public Sprite six;
+    public Sprite seven;
+    public Sprite eight;
+    public Sprite nine;
+
     private GameMode gameMode;
     private List<int> spawnList; 
     private float objSpeed;
@@ -142,11 +150,47 @@ public class SpawnManager : MonoBehaviour
         GameObject newObj = null;
         newObj = (GameObject)Instantiate(dataPacket, spawnPoint, Quaternion.identity);
 
+        SpriteRenderer spr = newObj.GetComponent<SpriteRenderer>();
+        int spriteNum = rand.Next(3, 10);
+        if(spriteNum == 3)
+        {
+            spr.sprite = three;
+        }
+        else if (spriteNum == 4)
+        {
+            spr.sprite = four;
+        }
+        else if (spriteNum == 4)
+        {
+            spr.sprite = four;
+        }
+        else if (spriteNum == 5)
+        {
+            spr.sprite = five;
+        }
+        else if (spriteNum == 6)
+        {
+            spr.sprite = six;
+        }
+        else if (spriteNum == 7)
+        {
+            spr.sprite = seven;
+        }
+        else if (spriteNum == 8)
+        {
+            spr.sprite = eight;
+        }
+       else if (spriteNum == 9)
+        {
+            spr.sprite = nine;
+        }
+
         DownwardMovment downMove = newObj.GetComponent<DownwardMovment>();
         downMove.speed = objSpeed;
 
         DataPacketLogic dpl = newObj.GetComponent<DataPacketLogic>();
-        int color = rand.Next(1, 7);
+        //Ignore 0 because it is black in our enum.
+        int color = rand.Next(1, 8);
         dpl.SetPacketColor(color);
     }
 
