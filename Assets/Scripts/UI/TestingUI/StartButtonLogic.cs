@@ -18,6 +18,6 @@ public class StartButtonLogic : MonoBehaviour
 
     public void OnClick()
     {
-        SceneManager.LoadScene("ColorPrototype");
+        SceneManager.LoadScene("ColorPrototypeSwipe");
     }
 }

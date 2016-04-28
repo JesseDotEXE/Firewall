@@ -80,22 +80,22 @@ public class DataPacketLogic : MonoBehaviour
     
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.layer == LayerMask.NameToLayer("SecurityRed"))
-        {
-            ChangeColor((int)PacketColors.Red);
-            //compositeColors.Remove((int)PacketColors.Red);
-        }
-        else if (coll.gameObject.layer == LayerMask.NameToLayer("SecurityGreen")) 
-        {
-            ChangeColor((int)PacketColors.Green);
-            //compositeColors.Remove((int)PacketColors.Red);
-        }
-        else if (coll.gameObject.layer == LayerMask.NameToLayer("SecurityBlue")) 
-        {
-            ChangeColor((int)PacketColors.Blue);
-            //compositeColors.Remove((int)PacketColors.Red);
-        }
-        else if(coll.gameObject.layer == LayerMask.NameToLayer("DataStore")) 
+        //if (coll.gameObject.layer == LayerMask.NameToLayer("SecurityRed"))
+        //{
+        //    ChangeColor((int)PacketColors.Red);
+        //    //compositeColors.Remove((int)PacketColors.Red);
+        //}
+        //else if (coll.gameObject.layer == LayerMask.NameToLayer("SecurityGreen")) 
+        //{
+        //    ChangeColor((int)PacketColors.Green);
+        //    //compositeColors.Remove((int)PacketColors.Red);
+        //}
+        //else if (coll.gameObject.layer == LayerMask.NameToLayer("SecurityBlue")) 
+        //{
+        //    ChangeColor((int)PacketColors.Blue);
+        //    //compositeColors.Remove((int)PacketColors.Red);
+        //}
+        if(coll.gameObject.layer == LayerMask.NameToLayer("DataStore")) 
         {
             if(packetColor == (int)PacketColors.Black) 
             {
@@ -109,162 +109,180 @@ public class DataPacketLogic : MonoBehaviour
         }
     }
 
-    void ChangeColor(int colorRemoved)
+    public void CheckColor(int swipeColor)
     {
-        //Modify White packets.
-        if (packetColor == (int)PacketColors.White)
+        if(swipeColor == packetColor)
         {
-            if(colorRemoved == (int)PacketColors.Red)
-            {
-                packetColor = (int)PacketColors.Cyan;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.cyan;
-            }
-
-            if (colorRemoved == (int)PacketColors.Green)
-            {
-                packetColor = (int)PacketColors.Magenta;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.magenta;
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                packetColor = (int)PacketColors.Yellow;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.yellow;
-            }
+            Explode();
         }
-
-        //Modify Red packets.
-        else if (packetColor == (int)PacketColors.Red)
+        else 
         {
-            if(colorRemoved == (int)PacketColors.Red)
-            {
-                packetColor = (int)PacketColors.Black;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.black;
-            }
-
-            if(colorRemoved == (int)PacketColors.Green)
-            {
-                //Bad Stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                //Bad Stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-        }
-
-        //Modify Green packets.
-        else if (packetColor == (int)PacketColors.Green)
-        {
-            if (colorRemoved == (int)PacketColors.Red)
-            {
-                //Bad stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-
-            if (colorRemoved == (int)PacketColors.Green)
-            {
-                packetColor = (int)PacketColors.Black;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.black;
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                //Bad Stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-        }
-
-        //Modify Blue packets.
-        else if (packetColor == (int)PacketColors.Blue)
-        {
-            if (colorRemoved == (int)PacketColors.Red)
-            {
-                //Bad stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-
-            if (colorRemoved == (int)PacketColors.Green)
-            {
-                //Bad stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                packetColor = (int)PacketColors.Black;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.black;
-            }
-        }
-
-        //Modify Yellow packets.
-        else if (packetColor == (int)PacketColors.Yellow)
-        {
-            if (colorRemoved == (int)PacketColors.Red)
-            {
-                packetColor = (int)PacketColors.Green;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.green;
-            }
-
-            if (colorRemoved == (int)PacketColors.Green)
-            {
-                packetColor = (int)PacketColors.Red;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.red;
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                //Bad stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-        }
-
-        //Modify Magenta packets.
-        else if (packetColor == (int)PacketColors.Magenta)
-        {
-            if (colorRemoved == (int)PacketColors.Red)
-            {
-                packetColor = (int)PacketColors.Blue;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.blue;
-            }
-
-            if (colorRemoved == (int)PacketColors.Green)
-            {
-                //Bad stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                packetColor = (int)PacketColors.Red;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.red;
-            }
-        }
-
-        //Modify Cyan packets.
-        else if (packetColor == (int)PacketColors.Cyan)
-        {
-            if (colorRemoved == (int)PacketColors.Red)
-            {
-                //Bad stuff
-                gameMode.GetScoreManager().DecreaseLives();
-            }
-
-            if (colorRemoved == (int)PacketColors.Green)
-            {
-                packetColor = (int)PacketColors.Blue;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.blue;
-            }
-
-            if (colorRemoved == (int)PacketColors.Blue)
-            {
-                packetColor = (int)PacketColors.Green;
-                gameObject.GetComponent<SpriteRenderer>().material.color = Color.green;
-            }
+            //Bad Stuff
+            gameMode.GetScoreManager().DecreaseLives();
         }
     }
+
+    public void Explode()
+    {
+        Destroy(gameObject);
+    }
+
+    //public void ChangeColor(int colorRemoved)
+    //{
+    //    //Modify White packets.
+    //    if (packetColor == (int)PacketColors.White)
+    //    {
+    //        if(colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            packetColor = (int)PacketColors.Cyan;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.cyan;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            packetColor = (int)PacketColors.Magenta;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.magenta;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            packetColor = (int)PacketColors.Yellow;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.yellow;
+    //        }
+    //    }
+
+    //    //Modify Red packets.
+    //    else if (packetColor == (int)PacketColors.Red)
+    //    {
+    //        if(colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            packetColor = (int)PacketColors.Black;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.black;
+    //        }
+
+    //        if(colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            //Bad Stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            //Bad Stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+    //    }
+
+    //    //Modify Green packets.
+    //    else if (packetColor == (int)PacketColors.Green)
+    //    {
+    //        if (colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            //Bad stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            packetColor = (int)PacketColors.Black;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.black;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            //Bad Stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+    //    }
+
+    //    //Modify Blue packets.
+    //    else if (packetColor == (int)PacketColors.Blue)
+    //    {
+    //        if (colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            //Bad stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            //Bad stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            packetColor = (int)PacketColors.Black;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.black;
+    //        }
+    //    }
+
+    //    //Modify Yellow packets.
+    //    else if (packetColor == (int)PacketColors.Yellow)
+    //    {
+    //        if (colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            packetColor = (int)PacketColors.Green;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.green;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            packetColor = (int)PacketColors.Red;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.red;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            //Bad stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+    //    }
+
+    //    //Modify Magenta packets.
+    //    else if (packetColor == (int)PacketColors.Magenta)
+    //    {
+    //        if (colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            packetColor = (int)PacketColors.Blue;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.blue;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            //Bad stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            packetColor = (int)PacketColors.Red;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.red;
+    //        }
+    //    }
+
+    //    //Modify Cyan packets.
+    //    else if (packetColor == (int)PacketColors.Cyan)
+    //    {
+    //        if (colorRemoved == (int)PacketColors.Red)
+    //        {
+    //            //Bad stuff
+    //            gameMode.GetScoreManager().DecreaseLives();
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Green)
+    //        {
+    //            packetColor = (int)PacketColors.Blue;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.blue;
+    //        }
+
+    //        if (colorRemoved == (int)PacketColors.Blue)
+    //        {
+    //            packetColor = (int)PacketColors.Green;
+    //            gameObject.GetComponent<SpriteRenderer>().material.color = Color.green;
+    //        }
+    //    }
+    //}
 
     public int GetPacketColor()
     {

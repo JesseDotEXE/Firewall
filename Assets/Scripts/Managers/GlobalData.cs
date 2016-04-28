@@ -10,6 +10,8 @@ public class GlobalData : MonoBehaviour
     public float difficultyMod;
     public System.Random globRandom;
 
+    public enum PacketColors { Black = 0, White, Red, Green, Blue, Yellow, Magenta, Cyan }
+
     //Nothing at the moment.
     //May not be needed.
     void Awake()
