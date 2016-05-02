@@ -151,6 +151,7 @@ public class SpawnManager : MonoBehaviour
         newObj = (GameObject)Instantiate(dataPacket, spawnPoint, Quaternion.identity);
 
         SpriteRenderer spr = newObj.GetComponent<SpriteRenderer>();
+
         int spriteNum = rand.Next(3, 10);
         if(spriteNum == 3)
         {
@@ -192,6 +193,7 @@ public class SpawnManager : MonoBehaviour
         //Ignore 0 because it is black in our enum.
         int color = rand.Next(1, 8);
         dpl.SetPacketColor(color);
+        dpl.SetSides(spriteNum);
     }
 
     public void StopSpawningObjects()
