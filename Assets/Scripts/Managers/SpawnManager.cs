@@ -34,6 +34,8 @@ public class SpawnManager : MonoBehaviour
     //private Vector3 spawnPoint4;
     private bool stopSpawning;
 
+    private GlobalData globalData;
+
     void Awake()
     {
 
@@ -42,6 +44,7 @@ public class SpawnManager : MonoBehaviour
     // Use this for initialization
     void Start () 
     {
+        globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
         gameMode = GetComponent<GameMode>();
         stopSpawning = false;
         spawnList = new List<int>();
@@ -98,57 +101,70 @@ public class SpawnManager : MonoBehaviour
             PopulateList(10);
         }
 
-        int numPorts = rand.Next(100) + 1;
-        if(numPorts < singlePortPercent) 
-        {
-            //Spawn into 1 queue.
-            int portToUse = spawnList[0];
+        SpawnDataPacket();
+        spawnList.RemoveAt(0);
+
+        //int numPorts = rand.Next(100) + 1;
+        //if(numPorts < singlePortPercent) 
+        //{
+        //    //Spawn into 1 queue.
+        //    int portToUse = spawnList[0];
             
-            if (portToUse == 1) { SpawnDataPacket(spawnPoint1); }
-            if (portToUse == 2) { SpawnDataPacket(spawnPoint2); }
-            if (portToUse == 3) { SpawnDataPacket(spawnPoint3); }
 
-            spawnList.RemoveAt(0);
-        } 
-        else 
-        {
-            //Spawn into 2 queues.
-            int portToUse1 = spawnList[0];
-            int portToUse2 = spawnList[1];
+        //    if (portToUse == 1) { SpawnDataPacket(spawnPoint1); }
+        //    if (portToUse == 2) { SpawnDataPacket(spawnPoint2); }
+        //    if (portToUse == 3) { SpawnDataPacket(spawnPoint3); }
 
-            //Fix same port collision.
-            if (portToUse1 == portToUse2)
-            {
-                int plusOrMin = rand.Next(2);
-                if (plusOrMin == 0)
-                {
-                    if (portToUse1 == 1) { portToUse2 = 3; }
-                    else portToUse2--;
-                }
-                else
-                {
-                    if (portToUse1 == 3) { portToUse2 = 1; }
-                    else portToUse2++;
-                }
-            }
+        //    spawnList.RemoveAt(0);
+        //} 
+        //else 
+        //{
+        //    //Spawn into 2 queues.
+        //    int portToUse1 = spawnList[0];
+        //    int portToUse2 = spawnList[1];
 
-            if (portToUse1 == 1) { SpawnDataPacket(spawnPoint1); }
-            if (portToUse1 == 2) { SpawnDataPacket(spawnPoint2); }
-            if (portToUse1 == 3) { SpawnDataPacket(spawnPoint3); }
+        //    //Fix same port collision.
+        //    if (portToUse1 == portToUse2)
+        //    {
+        //        int plusOrMin = rand.Next(2);
+        //        if (plusOrMin == 0)
+        //        {
+        //            if (portToUse1 == 1) { portToUse2 = 3; }
+        //            else portToUse2--;
+        //        }
+        //        else
+        //        {
+        //            if (portToUse1 == 3) { portToUse2 = 1; }
+        //            else portToUse2++;
+        //        }
+        //    }
 
-            if (portToUse2 == 1) { SpawnDataPacket(spawnPoint1); }
-            if (portToUse2 == 2) { SpawnDataPacket(spawnPoint2); }
-            if (portToUse2 == 3) { SpawnDataPacket(spawnPoint3); }
+        //    if (portToUse1 == 1) { SpawnDataPacket(spawnPoint1); }
+        //    if (portToUse1 == 2) { SpawnDataPacket(spawnPoint2); }
+        //    if (portToUse1 == 3) { SpawnDataPacket(spawnPoint3); }
 
-            spawnList.RemoveAt(0);
-            spawnList.RemoveAt(0);
-        } 
+        //    if (portToUse2 == 1) { SpawnDataPacket(spawnPoint1); }
+        //    if (portToUse2 == 2) { SpawnDataPacket(spawnPoint2); }
+        //    if (portToUse2 == 3) { SpawnDataPacket(spawnPoint3); }
+
+        //    spawnList.RemoveAt(0);
+        //    spawnList.RemoveAt(0);
+        //} 
     }
 
-    void SpawnDataPacket(Vector3 spawnPoint)
+    void SpawnDataPacket()
     {
+        //Between -2.35 and 3.35
+        float spawnX = UnityEngine.Random.Range(-2.35f, 3.35f);
+        if (globalData.buttonFlip)
+        {
+            spawnX = UnityEngine.Random.Range(-3.35f, 2.35f);
+        }
+        float spawnY = 7.5f;
+
         GameObject newObj = null;
-        newObj = (GameObject)Instantiate(dataPacket, spawnPoint, Quaternion.identity);
+        newObj = (GameObject)Instantiate(dataPacket, new Vector2(spawnX, spawnY), Quaternion.identity);
+        //newObj = (GameObject)Instantiate(dataPacket, spawnPoint, Quaternion.identity);
 
         SpriteRenderer spr = newObj.GetComponent<SpriteRenderer>();
 
