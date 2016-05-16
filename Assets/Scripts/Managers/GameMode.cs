@@ -6,6 +6,8 @@ public class GameMode : MonoBehaviour
     private GlobalData globalData;
     private ScoreManager scoreManager;
     private SpawnManager spawnManager;
+
+    public GameObject colorButtons;
     
     private float gameTimer;
     private float maxGameTime;
@@ -29,8 +31,9 @@ public class GameMode : MonoBehaviour
 
         ReadGlobalData();
 
-        gameTimer = 0f;        
-        maxGameTime = 90f;
+        SetButtonPosition(globalData.buttonFlip);
+
+        gameTimer = 90f;       
         difficultyTimer = 0f;
         difficultyTimeInterval = 10f;
 
@@ -40,10 +43,10 @@ public class GameMode : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        gameTimer += Time.deltaTime;
+        gameTimer -= Time.deltaTime;
         difficultyTimer += Time.deltaTime;
 
-        if(gameTimer >= maxGameTime || scoreManager.GetLives() <= 0)
+        if(gameTimer <= 0f || scoreManager.GetLives() <= 0)
         {
             //End spawning
             spawnManager.StopSpawningObjects();
@@ -114,6 +117,18 @@ public class GameMode : MonoBehaviour
             //Don't have a box for it yet.
             difficultyMod = 0.25f;
         }        
+    }
+
+    private void SetButtonPosition(bool flipped)
+    {
+        if(flipped)
+        {
+            colorButtons.GetComponent<Transform>().position = new Vector2(3.5f, 0f);  
+        }
+        else
+        {
+            colorButtons.GetComponent<Transform>().position = new Vector2(-3.5f, 0f);
+        }
     }
 
     public float GetGameTimer()

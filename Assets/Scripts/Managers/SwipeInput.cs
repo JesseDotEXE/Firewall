@@ -5,7 +5,7 @@ public class SwipeInput : MonoBehaviour
 {
     public Camera camera;
     private LineRenderer lineRenderer;
-    bool movingMouse = false;
+    bool dragging = false;
     private Color white = Color.white;
     private Color red = Color.red;
     private Color green = Color.green;
@@ -22,6 +22,8 @@ public class SwipeInput : MonoBehaviour
     public GameObject blueButton;
     public Sprite offButton;
     public Sprite onButton;
+    Vector2 touchStart;
+    Vector2 touchEnd;
     Vector2 lineStart;
     Vector2 lineEnd;
     
@@ -39,72 +41,96 @@ public class SwipeInput : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        //Idea is check where swipe starts.
-        //Draw line
-        //Upon stopping run raycast from start and to stop to see if it intersects the Datapacket.
+        //CheckTouchInput();
+        CheckMKBInput();
+    }
 
+    void CheckTouchInput()
+    {
         //Only allow one swipe at a time.
-        //if(Input.touchCount == 1 )
-        //{
-        //    Debug.Log("Inside Touch.");
+        if (Input.touchCount == 1)
+        {
+            Debug.Log("Inside Touch.");
 
-        //    Vector2 touchStart;
-        //    Vector2 touchEnd;
-        //    RaycastHit hit = new RaycastHit();
-        //    Touch touch = Input.GetTouch(0);
+            Touch touch = Input.GetTouch(0);
 
-        //    if (touch.phase == TouchPhase.Began)
-        //    {
-        //        Debug.Log("Starting Touch!");
-        //        touchStart = touch.position;
-        //        lineRenderer.SetPosition(0, touchStart);
-        //    }
-        //    else if (touch.phase == TouchPhase.Moved)
-        //    {
-        //        Debug.Log("Moving Touch!");
-        //        touchEnd = touch.position;
-        //        lineRenderer.SetPosition(1, touchEnd);
-        //    }
-        //    else if (touch.phase == TouchPhase.Ended)
-        //    {
-        //        Debug.Log("Ending Touch!");
-        //        touchEnd = touch.position;
+            if (touch.phase == TouchPhase.Began)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
+                if (hit.collider != null)
+                {
+                    Debug.Log("Ray Hit");
+                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
+                    {
+                        UpdateColor((int)GlobalData.PacketColors.Red);
+                        swipeActive = false;
+                    }
+                    else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
+                    {
+                        UpdateColor((int)GlobalData.PacketColors.Green);
+                        swipeActive = false;
+                    }
+                    else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
+                    {
+                        UpdateColor((int)GlobalData.PacketColors.Blue);
+                        swipeActive = false;
+                    }
+                    else
+                    {
+                        swipeActive = true;
+                    }
+                }
+                else
+                {
+                    swipeActive = true;
+                }
 
-        //        //Do line cast
-        //    }
-        //}
+                if (swipeActive)
+                {
+                    lineRenderer.enabled = true;
+                    touchStart = camera.ScreenToWorldPoint(touch.position);
+                    lineRenderer.SetPosition(0, touchStart);
+                    dragging = true;
+                }
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                if (swipeActive)
+                {
+                    touchEnd = camera.ScreenToWorldPoint(touch.position);
+                    lineRenderer.SetPosition(1, touchEnd);
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                if (swipeActive)
+                {
+                    DoRayCast(touchStart, touchEnd);
+                    lineRenderer.enabled = false;
+                    touchStart = Vector2.zero;
+                    touchEnd = Vector2.zero;
+                    dragging = false;
+                }
+            }
+        }
+    }
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Debug.Log("Button Clicked Mouse");
-            
-        //    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        //    if (hit.collider != null)
-        //    {
-        //        Debug.Log("Ray Hit");
-        //        if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
-        //        {
-        //           UpdateColor((int)GlobalData.PacketColors.Red);
-        //           swipeActive = false;
-        //        }
-        //        else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
-        //        {
-        //            UpdateColor((int)GlobalData.PacketColors.Green);
-        //            swipeActive = false;
-        //        }
-        //        else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
-        //        {
-        //            UpdateColor((int)GlobalData.PacketColors.Blue);
-        //            swipeActive = false;
-        //        }
-        //        else 
-        //        {
-        //            swipeActive = true;
-        //        }
-        //    }
-        //}
+    void CheckMKBInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            UpdateColor((int)GlobalData.PacketColors.Red);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            UpdateColor((int)GlobalData.PacketColors.Green);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            UpdateColor((int)GlobalData.PacketColors.Blue);
+        }
 
-        if (Input.GetMouseButtonDown(0) && !movingMouse)
+        if (Input.GetMouseButtonDown(0) && !dragging)
         {
             Debug.Log("Button Clicked Mouse");
 
@@ -132,9 +158,9 @@ public class SwipeInput : MonoBehaviour
                     swipeActive = true;
                 }
             }
-            else 
+            else
             {
-                swipeActive = true; 
+                swipeActive = true;
             }
 
             if (swipeActive)
@@ -143,8 +169,8 @@ public class SwipeInput : MonoBehaviour
                 lineRenderer.enabled = true;
                 lineStart = camera.ScreenToWorldPoint(Input.mousePosition);
                 lineRenderer.SetPosition(0, lineStart);
-                movingMouse = true;
-            }           
+                dragging = true;
+            }
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -155,11 +181,11 @@ public class SwipeInput : MonoBehaviour
                 lineRenderer.enabled = false; //Will play animation thing here.
                 lineStart = Vector2.zero;
                 lineEnd = Vector2.zero;
-                movingMouse = false;
+                dragging = false;
             }
         }
 
-        if (movingMouse)
+        if (dragging)
         {
             if (swipeActive)
             {
@@ -168,7 +194,6 @@ public class SwipeInput : MonoBehaviour
                 lineRenderer.SetPosition(1, lineEnd);
             }
         }
-        
     }
 
     void DoRayCast(Vector3 start, Vector3 end)

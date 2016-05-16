@@ -5,8 +5,9 @@ public class ScoreManager : MonoBehaviour
 {
     private int lives;
     private int score;
+    public int pointsPerVirus;
     private int combo;
-    private int comboCount;
+    public int comboCount;
 
     void Awake() 
     {
@@ -17,6 +18,8 @@ public class ScoreManager : MonoBehaviour
 	void Start () 
     {
         lives = 3;
+        pointsPerVirus = 1;
+        score = 0;
         combo = 1;
         comboCount = 1;
 	}
@@ -47,11 +50,11 @@ public class ScoreManager : MonoBehaviour
         lives--;
     }
 
-    public void AddPoints(int points) 
+    public void AddPoints() 
     {
-        score = score + (points * combo);
+        score = score + (pointsPerVirus * combo);
         comboCount++;
-        if (comboCount >= 10) 
+        if (comboCount > 1) 
         { 
             IncreaseCombo(); 
         }
@@ -60,11 +63,16 @@ public class ScoreManager : MonoBehaviour
     public void IncreaseCombo() 
     {
         combo++;
-        ResetCombo();
+        ResetComboCount();
     }
 
     public void ResetCombo() 
     {
-        combo = 0;
+        combo = 1;
+    }
+
+    public void ResetComboCount()
+    {
+        comboCount = 1;
     }
 }

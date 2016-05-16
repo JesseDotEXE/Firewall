@@ -14,6 +14,10 @@ public class DataPacketLogic : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private ParticleSystemRenderer particleRenderer;
     private ParticleSystem particleSys;
+    private ScoreManager scoreManager;
+
+    public GameObject explosion;
+    private ParticleSystem explosionSys;
 
     public Material threeMat;
     public Material fourMat;
@@ -32,11 +36,12 @@ public class DataPacketLogic : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         particleSys = GetComponent<ParticleSystem>();
         particleRenderer = GetComponent<ParticleSystemRenderer>();
+        scoreManager = gameMode.GetComponent<ScoreManager>();
         harmless = false;
         //compositeColors = new List<int>();
         InitializeColors();
         InitializeSides();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -84,36 +89,43 @@ public class DataPacketLogic : MonoBehaviour
     {
         if (packetColor == (int)PacketColors.White)
         {
+            //explosionSys.startColor = Color.white;
             spriteRenderer.material.color = Color.white;
             particleSys.startColor = Color.white;
         }
         else if (packetColor == (int)PacketColors.Red)
         {
+            //explosionSys.startColor = Color.red;
             spriteRenderer.material.color = Color.red;
             particleSys.startColor = Color.red;
         }
         else if (packetColor == (int)PacketColors.Green)
         {
+            //explosionSys.startColor = Color.green;
             spriteRenderer.material.color = Color.green;
             particleSys.startColor = Color.green;
         }
         else if (packetColor == (int)PacketColors.Blue)
         {
+            //explosionSys.startColor = Color.blue;
             spriteRenderer.material.color = Color.blue;
             particleSys.startColor = Color.blue;
         }
         else if (packetColor == (int)PacketColors.Yellow)
         {
+            //explosionSys.startColor = Color.yellow;
             spriteRenderer.material.color = Color.yellow;
             particleSys.startColor = Color.yellow;
         }
         else if (packetColor == (int)PacketColors.Magenta)
         {
+            //explosionSys.startColor = Color.magenta;
             spriteRenderer.material.color = Color.magenta;
             particleSys.startColor = Color.magenta;
         }
         else if (packetColor == (int)PacketColors.Cyan)
         {
+            //explosionSys.startColor = Color.cyan;
             spriteRenderer.material.color = Color.cyan;
             particleSys.startColor = Color.cyan;
         }        
@@ -123,15 +135,10 @@ public class DataPacketLogic : MonoBehaviour
     {
         if(coll.gameObject.layer == LayerMask.NameToLayer("DataStore")) 
         {
-            if(packetColor == (int)PacketColors.Black) 
-            {
-                gameMode.GetScoreManager().AddPoints(10);
-            }
-            else 
-            {
-                gameMode.GetScoreManager().DecreaseLives();
-                Debug.Log("Taking away lives!");
-            }
+            gameMode.GetScoreManager().ResetCombo();
+            gameMode.GetScoreManager().ResetComboCount();
+            gameMode.GetScoreManager().DecreaseLives();
+            //Also will need to cause explosion.
         }
     }
 
@@ -144,13 +151,58 @@ public class DataPacketLogic : MonoBehaviour
         else 
         {
             //Bad Stuff
-            gameMode.GetScoreManager().DecreaseLives();
+            gameMode.GetScoreManager().ResetComboCount();
+            //Play screenshake or something.
         }
     }
 
     public void Explode()
     {
-        Destroy(gameObject);
+         
+        GameObject tempPSys = (GameObject)Instantiate(explosion, transform.position, Quaternion.identity);
+        explosionSys = tempPSys.GetComponent<ParticleSystem>();
+        SetExplosionColor();
+        explosionSys.Emit(sides);
+
+        particleSys.Stop();
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
+
+        gameMode.GetScoreManager().AddPoints();
+
+        Destroy(gameObject, 0.5f);
+    }
+
+    private void SetExplosionColor()
+    {
+        if (packetColor == (int)PacketColors.White)
+        {
+            explosionSys.startColor = Color.white;
+        }
+        else if (packetColor == (int)PacketColors.Red)
+        {
+            explosionSys.startColor = Color.red;
+        }
+        else if (packetColor == (int)PacketColors.Green)
+        {
+            explosionSys.startColor = Color.green;
+        }
+        else if (packetColor == (int)PacketColors.Blue)
+        {
+            explosionSys.startColor = Color.blue;
+        }
+        else if (packetColor == (int)PacketColors.Yellow)
+        {
+            explosionSys.startColor = Color.yellow;
+        }
+        else if (packetColor == (int)PacketColors.Magenta)
+        {
+            explosionSys.startColor = Color.magenta;
+        }
+        else if (packetColor == (int)PacketColors.Cyan)
+        {
+            explosionSys.startColor = Color.cyan;
+        }
     }
 
     public int GetPacketColor()

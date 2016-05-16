@@ -189,6 +189,9 @@ public class SpawnManager : MonoBehaviour
         DownwardMovment downMove = newObj.GetComponent<DownwardMovment>();
         downMove.speed = objSpeed;
 
+        ParticleSystem particleSys = newObj.GetComponent<ParticleSystem>();
+        particleSys.startSpeed = objSpeed * 2;
+
         DataPacketLogic dpl = newObj.GetComponent<DataPacketLogic>();
         //Ignore 0 because it is black in our enum.
         int color = rand.Next(1, 8);
