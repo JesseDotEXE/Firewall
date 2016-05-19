@@ -19,6 +19,8 @@ public class DataPacketLogic : MonoBehaviour
     public GameObject explosion;
     private ParticleSystem explosionSys;
 
+    public GameObject dataStoreBreach;
+
     public Material threeMat;
     public Material fourMat;
     public Material fiveMat;
@@ -139,7 +141,13 @@ public class DataPacketLogic : MonoBehaviour
             gameMode.GetScoreManager().ResetComboCount();
             gameMode.GetScoreManager().DecreaseLives();
             //Also will need to cause explosion.
+            SpawnDataStoreBreach();
         }
+    }
+
+    private void SpawnDataStoreBreach()
+    {
+        GameObject breach = (GameObject)Instantiate(dataStoreBreach, transform.position, Quaternion.identity);
     }
 
     public void CheckColor(int swipeColor)
