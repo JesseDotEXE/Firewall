@@ -4,7 +4,7 @@ using System.Collections;
 public class SwipeInput : MonoBehaviour 
 {
     public Camera camera;
-    private LineRenderer lineRenderer;
+    //private LineRenderer lineRenderer;
     bool dragging = false;
     private Color white = Color.white;
     private Color red = Color.red;
@@ -20,6 +20,9 @@ public class SwipeInput : MonoBehaviour
     public GameObject redButton;
     public GameObject greenButton;
     public GameObject blueButton;
+    public GameObject swipeObj;
+    private SwipeCollision swipeCollision;
+    private TrailRenderer trailRenderer;
     public Sprite offButton;
     public Sprite onButton;
     Vector2 touchStart;
@@ -32,10 +35,12 @@ public class SwipeInput : MonoBehaviour
     // Use this for initialization
     void Start () 
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-        lineRenderer.SetWidth(0.1F, 0.1F);
-        lineRenderer.SetColors(Color.black, Color.black);
+        trailRenderer = swipeObj.GetComponent<TrailRenderer>();
+        swipeCollision = swipeObj.GetComponent<SwipeCollision>();
+        //lineRenderer = GetComponent<LineRenderer>();
+        //lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+        //lineRenderer.SetWidth(0.1F, 0.1F);
+        //lineRenderer.SetColors(Color.black, Color.black);
     }
 	
 	// Update is called once per frame
@@ -87,9 +92,11 @@ public class SwipeInput : MonoBehaviour
 
                 if (swipeActive)
                 {
-                    lineRenderer.enabled = true;
+                    //lineRenderer.enabled = true;
                     touchStart = camera.ScreenToWorldPoint(touch.position);
-                    lineRenderer.SetPosition(0, touchStart);
+                    swipeObj.transform.position = touchStart;
+                    swipeObj.SetActive(true);
+                    //lineRenderer.SetPosition(0, touchStart);
                     dragging = true;
                 }
             }
@@ -98,15 +105,17 @@ public class SwipeInput : MonoBehaviour
                 if (swipeActive)
                 {
                     touchEnd = camera.ScreenToWorldPoint(touch.position);
-                    lineRenderer.SetPosition(1, touchEnd);
+                    swipeObj.transform.position = touchEnd;
+                    //lineRenderer.SetPosition(1, touchEnd);
                 }
             }
             else if (touch.phase == TouchPhase.Ended)
             {
                 if (swipeActive)
                 {
-                    DoRayCast(touchStart, touchEnd);
-                    lineRenderer.enabled = false;
+                    //DoRayCast(touchStart, touchEnd);
+                    //lineRenderer.enabled = false;
+                    swipeObj.SetActive(false);
                     touchStart = Vector2.zero;
                     touchEnd = Vector2.zero;
                     dragging = false;
@@ -137,6 +146,7 @@ public class SwipeInput : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {
+                //Check mto see if we hit a button, if so don't make the drag effect.
                 Debug.Log("Ray Hit");
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
                 {
@@ -160,15 +170,23 @@ public class SwipeInput : MonoBehaviour
             }
             else
             {
-                swipeActive = true;
+                if (redOn || greenOn || blueOn)
+                {
+                    swipeActive = true;
+                }
             }
 
             if (swipeActive)
             {
                 //Debug.Log("Starting Touch!");
-                lineRenderer.enabled = true;
+                //lineRenderer.enabled = true;
+
+                //Add object here
+                swipeObj.transform.position = lineStart;
+                swipeObj.SetActive(true);
+
                 lineStart = camera.ScreenToWorldPoint(Input.mousePosition);
-                lineRenderer.SetPosition(0, lineStart);
+                //lineRenderer.SetPosition(0, lineStart);
                 dragging = true;
             }
         }
@@ -177,8 +195,12 @@ public class SwipeInput : MonoBehaviour
             if (swipeActive)
             {
                 ///Debug.Log("Ending Touch!");
-                DoRayCast(lineStart, lineEnd);
-                lineRenderer.enabled = false; //Will play animation thing here.
+                //DoRayCast(lineStart, lineEnd);
+                //lineRenderer.enabled = false; //Will play animation thing here.
+
+                //Stop object here
+                swipeObj.SetActive(false);
+
                 lineStart = Vector2.zero;
                 lineEnd = Vector2.zero;
                 dragging = false;
@@ -191,7 +213,10 @@ public class SwipeInput : MonoBehaviour
             {
                 //Debug.Log("Moving Touch!");
                 lineEnd = camera.ScreenToWorldPoint(Input.mousePosition);
-                lineRenderer.SetPosition(1, lineEnd);
+                //lineRenderer.SetPosition(1, lineEnd);
+
+                //Set object position here
+                swipeObj.transform.position = lineEnd;
             }
         }
     }
@@ -233,44 +258,58 @@ public class SwipeInput : MonoBehaviour
 
         if(redOn && greenOn && blueOn)
         {
-            lineRenderer.SetColors(white, white);
+            //lineRenderer.SetColors(white, white);
+            trailRenderer.material.SetColor("_TintColor", white);
             color = (int)GlobalData.PacketColors.White;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(redOn && greenOn && !blueOn)
         {
-            lineRenderer.SetColors(yellow, yellow);
+            //lineRenderer.SetColors(yellow, yellow);
+            trailRenderer.material.SetColor("_TintColor", yellow);
             color = (int)GlobalData.PacketColors.Yellow;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(redOn && !greenOn && blueOn)
         {
-            lineRenderer.SetColors(magenta, magenta);
+            //lineRenderer.SetColors(magenta, magenta);
+            trailRenderer.material.SetColor("_TintColor", magenta);
             color = (int)GlobalData.PacketColors.Magenta;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(!redOn && greenOn && blueOn)
         {
-            lineRenderer.SetColors(cyan, cyan);
+            //lineRenderer.SetColors(cyan, cyan);
+            trailRenderer.material.SetColor("_TintColor", cyan);
             color = (int)GlobalData.PacketColors.Cyan;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(redOn && !greenOn && !blueOn)
         {
-            lineRenderer.SetColors(red, red);
+            //lineRenderer.SetColors(red, red);
+            trailRenderer.material.SetColor("_TintColor", red);
             color = (int)GlobalData.PacketColors.Red;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(!redOn && greenOn && !blueOn)
         {
-            lineRenderer.SetColors(green, green);
+            //lineRenderer.SetColors(green, green);
+            trailRenderer.material.SetColor("_TintColor", green);
             color = (int)GlobalData.PacketColors.Green;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(!redOn && !greenOn && blueOn)
         {
-            lineRenderer.SetColors(blue, blue);
+            //lineRenderer.SetColors(blue, blue);
+            trailRenderer.material.SetColor("_TintColor", blue);
             color = (int)GlobalData.PacketColors.Blue;
+            swipeCollision.SetSwipeColor(color);
             swipeActive = true;
         }
         else if(!redOn && !greenOn && !blueOn)
