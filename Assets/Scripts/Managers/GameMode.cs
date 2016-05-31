@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameMode : MonoBehaviour 
 {
@@ -25,7 +26,7 @@ public class GameMode : MonoBehaviour
     // Use this for initialization
     void Awake () 
     {
-        DontDestroyOnLoad(transform.gameObject);
+        //DontDestroyOnLoad(transform.gameObject);
         scoreManager = GetComponent<ScoreManager>();
         spawnManager = GetComponent<SpawnManager>();
 
@@ -46,10 +47,14 @@ public class GameMode : MonoBehaviour
         gameTimer -= Time.deltaTime;
         difficultyTimer += Time.deltaTime;
 
-        if(gameTimer <= 0f || scoreManager.GetLives() <= 0)
+        if(gameTimer <= 0f)
         {
             //End spawning
-            spawnManager.StopSpawningObjects();
+            EndLevel(true);
+        }
+        if(scoreManager.GetLives() <= 0)
+        {
+            EndLevel(false);
         }
 
         if(difficultyTimer >= difficultyTimeInterval)
@@ -61,6 +66,27 @@ public class GameMode : MonoBehaviour
             }
         }
 	}
+
+    void EndLevel(bool levelFinished)
+    {
+        Debug.Log("Ending LEVEL!");
+        if (levelFinished)
+        {
+            spawnManager.StopSpawningObjects();
+            //Play any "win" animation here.
+            //Delay then go.
+            globalData.finalScore = scoreManager.GetScore();
+            SceneManager.LoadScene("GameOver");
+        }
+        else
+        {
+            spawnManager.StopSpawningObjects();
+            //Play any "lose" animation here.
+            //Delay then go.
+            globalData.finalScore = scoreManager.GetScore();
+            SceneManager.LoadScene("GameOver");
+        }
+    }
 
     private void IncreaseDifficulty()
     {

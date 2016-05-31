@@ -8,8 +8,10 @@ public class GlobalData : MonoBehaviour
     public float spawnInterval;
     public float singlePortPercent;
     public float difficultyMod;
+    public bool soundOn;
     public bool buttonFlip;
     public System.Random globRandom;
+    public int finalScore;
 
     public enum PacketColors { Black = 0, White, Red, Green, Blue, Yellow, Magenta, Cyan }
 
@@ -18,7 +20,9 @@ public class GlobalData : MonoBehaviour
     void Awake()
     {
         globRandom = new System.Random();
+        soundOn = true;
         buttonFlip = false;
+        finalScore = 0;
         DontDestroyOnLoad(transform.gameObject);
     }
 
@@ -32,5 +36,12 @@ public class GlobalData : MonoBehaviour
         {
             objMoveSpeed = 0f;
         }
+    }
+
+    public void ResetData()
+    {
+        globRandom = new System.Random();
+        finalScore = 0;
+        DontDestroyOnLoad(transform.gameObject);
     }
 }
