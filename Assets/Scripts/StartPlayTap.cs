@@ -4,10 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class StartPlayTap : MonoBehaviour
 {
+    private AudioSource audioSource;
+    public AudioClip transitionSFX;
+
     // Use this for initialization
     void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -19,13 +22,21 @@ public class StartPlayTap : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
-                SceneManager.LoadScene("ColorPrototypeSwipe");
+                audioSource.PlayOneShot(transitionSFX, 1);
+                StartCoroutine(DelayedSceneLoad());
             }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            SceneManager.LoadScene("ColorPrototypeSwipe");
+            audioSource.PlayOneShot(transitionSFX, 1);
+            StartCoroutine(DelayedSceneLoad());
         }
+    }
+
+    public IEnumerator DelayedSceneLoad()
+    {
+        yield return new WaitForSeconds(.35f);
+        SceneManager.LoadScene("ColorPrototypeSwipe");
     }
 }

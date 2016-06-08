@@ -18,6 +18,12 @@ public class QuitButton : MonoBehaviour
 
     public void OnClick()
     {
+        StartCoroutine(DelayedQuit());
+    }
+
+    public IEnumerator DelayedQuit()
+    {
+        yield return new WaitForSeconds(.35f);
         EditorApplication.isPlaying = false;
         Application.Quit();
     }

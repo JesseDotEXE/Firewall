@@ -31,6 +31,10 @@ public class DataPacketLogic : MonoBehaviour
 
     private bool harmless;
 
+    private AudioSource audioSource;
+    public AudioClip explodeSFX;
+    public AudioClip dataBreachSFX;
+
 	// Use this for initialization
 	void Awake () 
     {
@@ -39,6 +43,7 @@ public class DataPacketLogic : MonoBehaviour
         particleSys = GetComponent<ParticleSystem>();
         particleRenderer = GetComponent<ParticleSystemRenderer>();
         scoreManager = gameMode.GetComponent<ScoreManager>();
+        audioSource = GetComponent<AudioSource>();
         harmless = false;
         //compositeColors = new List<int>();
         InitializeColors();
@@ -139,9 +144,9 @@ public class DataPacketLogic : MonoBehaviour
         {
             gameMode.GetScoreManager().ResetCombo();
             gameMode.GetScoreManager().ResetComboCount();
-            gameMode.GetScoreManager().DecreaseLives();
-            //Also will need to cause explosion.
+            gameMode.GetScoreManager().DecreaseLives();            
             SpawnDataStoreBreach();
+            audioSource.PlayOneShot(dataBreachSFX, 1);
         }
     }
 
@@ -171,6 +176,8 @@ public class DataPacketLogic : MonoBehaviour
         explosionSys = tempPSys.GetComponent<ParticleSystem>();
         SetExplosionColor();
         explosionSys.Emit(sides);
+
+        audioSource.PlayOneShot(explodeSFX, 1);
 
         particleSys.Stop();
         GetComponent<SpriteRenderer>().enabled = false;

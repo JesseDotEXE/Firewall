@@ -17,6 +17,7 @@ public class SwipeInput : MonoBehaviour
     private bool greenOn = false;
     private bool blueOn = false;
     private bool swipeActive = false;
+    public GameObject colorButtons;
     public GameObject redButton;
     public GameObject greenButton;
     public GameObject blueButton;
@@ -29,6 +30,12 @@ public class SwipeInput : MonoBehaviour
     Vector2 touchEnd;
     Vector2 lineStart;
     Vector2 lineEnd;
+
+    private AudioSource audioSourceSwipe;
+    private AudioSource audioSourceButton;
+    public AudioClip swipeSFX;
+    public AudioClip colorToggleSFX;
+
     
     private int color; //0 = red, 1 = green, 2 = blue
 
@@ -37,6 +44,8 @@ public class SwipeInput : MonoBehaviour
     {
         trailRenderer = swipeObj.GetComponent<TrailRenderer>();
         swipeCollision = swipeObj.GetComponent<SwipeCollision>();
+        audioSourceSwipe = swipeObj.GetComponent<AudioSource>();
+        audioSourceButton = colorButtons.GetComponent<AudioSource>();
         //lineRenderer = GetComponent<LineRenderer>();
         //lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
         //lineRenderer.SetWidth(0.1F, 0.1F);
@@ -107,6 +116,11 @@ public class SwipeInput : MonoBehaviour
                     touchEnd = camera.ScreenToWorldPoint(touch.position);
                     swipeObj.transform.position = touchEnd;
                     //lineRenderer.SetPosition(1, touchEnd);
+
+                    if (!audioSourceSwipe.isPlaying)
+                    {
+                        audioSourceSwipe.PlayOneShot(swipeSFX, 1);
+                    }
                 }
             }
             else if (touch.phase == TouchPhase.Ended)
@@ -217,6 +231,11 @@ public class SwipeInput : MonoBehaviour
 
                 //Set object position here
                 swipeObj.transform.position = lineEnd;
+
+                if (!audioSourceSwipe.isPlaying)
+                {
+                    audioSourceSwipe.PlayOneShot(swipeSFX, 1);
+                }
             }
         }
     }
@@ -242,6 +261,9 @@ public class SwipeInput : MonoBehaviour
 
     public void UpdateColor(int newColor)
     {
+        if(!audioSourceButton.isPlaying)
+            audioSourceButton.PlayOneShot(colorToggleSFX, 1);    
+
         Debug.Log("Updating Colors");
         if(newColor == (int)GlobalData.PacketColors.Red)
         {

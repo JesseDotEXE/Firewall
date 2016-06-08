@@ -19,6 +19,12 @@ public class BackButton : MonoBehaviour
 
     public void OnClick()
     {
+        StartCoroutine(DelayedSceneLoad());
+    }
+
+    public IEnumerator DelayedSceneLoad()
+    {
+        yield return new WaitForSeconds(.35f);
         SceneManager.LoadScene("MainMenu");
     }
 }

@@ -21,6 +21,12 @@ public class MainMenuButton : MonoBehaviour
     public void OnClick()
     {
         globalData.ResetData();
+        StartCoroutine(DelayedSceneLoad());
+    }
+
+    public IEnumerator DelayedSceneLoad()
+    {
+        yield return new WaitForSeconds(.35f);
         SceneManager.LoadScene("MainMenu");
     }
 }

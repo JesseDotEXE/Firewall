@@ -20,7 +20,9 @@ public class GameMode : MonoBehaviour
     private float curSpawnInterval;
     private float curSinglePortPercent;
     private float difficultyMod;
-    private int attributeToIncrease;    
+    private int attributeToIncrease;
+
+    private bool paused;
 
 
     // Use this for initialization
@@ -34,6 +36,8 @@ public class GameMode : MonoBehaviour
 
         SetButtonPosition(globalData.buttonFlip);
 
+        paused = false;
+
         gameTimer = 90f;       
         difficultyTimer = 0f;
         difficultyTimeInterval = 10f;
@@ -44,25 +48,28 @@ public class GameMode : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        gameTimer -= Time.deltaTime;
-        difficultyTimer += Time.deltaTime;
+        if (!paused)
+        {
+            gameTimer -= Time.deltaTime;
+            difficultyTimer += Time.deltaTime;
 
-        if(gameTimer <= 0f)
-        {
-            //End spawning
-            EndLevel(true);
-        }
-        if(scoreManager.GetLives() <= 0)
-        {
-            EndLevel(false);
-        }
-
-        if(difficultyTimer >= difficultyTimeInterval)
-        {
-            if (attributeToIncrease <= 21)
+            if (gameTimer <= 0f)
             {
-                IncreaseDifficulty();
-                difficultyTimer = 0f;
+                //End spawning
+                EndLevel(true);
+            }
+            if (scoreManager.GetLives() <= 0)
+            {
+                EndLevel(false);
+            }
+
+            if (difficultyTimer >= difficultyTimeInterval)
+            {
+                if (attributeToIncrease <= 21)
+                {
+                    IncreaseDifficulty();
+                    difficultyTimer = 0f;
+                }
             }
         }
 	}
@@ -190,5 +197,15 @@ public class GameMode : MonoBehaviour
     public float GetCurrentSinglePortPercentage()
     {
         return curSinglePortPercent;
+    }
+
+    public bool isPaused()
+    {
+        return paused;
+    }
+
+    public void setPaused(bool pause)
+    {
+        paused = pause;
     }
 }
