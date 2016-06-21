@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameMode : MonoBehaviour 
 {
     private GlobalData globalData;
     private ScoreManager scoreManager;
     private SpawnManager spawnManager;
-
-    public GameObject colorButtons;
+    private AudioSource audioSource;
+    private JukeBoxLogic jukeBoxLogic;
     
+    public GameObject colorButtons;
+    public GameObject redScreen;
+    public GameObject bigDataStoreBreach;
+    public GameObject databaseBreak;
+
     private float gameTimer;
     private float maxGameTime;
     private float difficultyTimer;
@@ -22,7 +28,10 @@ public class GameMode : MonoBehaviour
     private float difficultyMod;
     private int attributeToIncrease;
 
-    private bool paused;
+    private bool levelEnded;
+
+    public AudioClip breakSound;
+    public AudioClip failureSound;
 
 
     // Use this for initialization
@@ -31,16 +40,18 @@ public class GameMode : MonoBehaviour
         //DontDestroyOnLoad(transform.gameObject);
         scoreManager = GetComponent<ScoreManager>();
         spawnManager = GetComponent<SpawnManager>();
+        audioSource = GetComponent<AudioSource>();
+        jukeBoxLogic = GameObject.Find("JukeBox").GetComponent<JukeBoxLogic>();
 
         ReadGlobalData();
 
         SetButtonPosition(globalData.buttonFlip);
 
-        paused = false;
+        levelEnded = false;
 
-        gameTimer = 90f;       
+        gameTimer = 0f;       
         difficultyTimer = 0f;
-        difficultyTimeInterval = 10f;
+        difficultyTimeInterval = 5f;
 
         attributeToIncrease = 0;        
     }
@@ -48,19 +59,15 @@ public class GameMode : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        if (!paused)
+        if (!levelEnded)
         {
-            gameTimer -= Time.deltaTime;
+            gameTimer += Time.deltaTime;
             difficultyTimer += Time.deltaTime;
 
-            if (gameTimer <= 0f)
-            {
-                //End spawning
-                EndLevel(true);
-            }
             if (scoreManager.GetLives() <= 0)
             {
-                EndLevel(false);
+                CleanUpGameObject("Virus");
+                EndLevel();
             }
 
             if (difficultyTimer >= difficultyTimeInterval)
@@ -74,25 +81,48 @@ public class GameMode : MonoBehaviour
         }
 	}
 
-    void EndLevel(bool levelFinished)
+    private void CleanUpGameObject(string tag)
     {
-        Debug.Log("Ending LEVEL!");
-        if (levelFinished)
+        GameObject[] goList = GameObject.FindGameObjectsWithTag(tag);
+        for (int i = 0; i < goList.Length; i++)
         {
-            spawnManager.StopSpawningObjects();
-            //Play any "win" animation here.
-            //Delay then go.
-            globalData.finalScore = scoreManager.GetScore();
-            SceneManager.LoadScene("GameOver");
+            goList[i].SetActive(false);
         }
-        else
-        {
-            spawnManager.StopSpawningObjects();
-            //Play any "lose" animation here.
-            //Delay then go.
-            globalData.finalScore = scoreManager.GetScore();
-            SceneManager.LoadScene("GameOver");
-        }
+    }
+
+    private void EndLevel()
+    {
+        levelEnded = true;
+        jukeBoxLogic.StopPlaying();
+        spawnManager.StopSpawningObjects();
+
+        //Repeat 3 times, shoot 1 final virus at 3x speed.
+        //Upon impact it will play the big explosion on the wall.
+        //Then play failure sound and spawn giant data leak.
+        InvokeRepeating("BreakDatabase", 0, 0.65f);
+        Invoke("CreateDataLeak", 3f);
+        Invoke("GameOver", 5f);
+
+    }
+
+    void BreakDatabase()
+    {
+        audioSource.PlayOneShot(breakSound);
+        GameObject dbBreak = (GameObject)Instantiate(databaseBreak, new Vector2(0f, -5.75f), Quaternion.identity);
+    }
+
+    void CreateDataLeak()
+    {
+        CleanUpGameObject("Breach");
+        CancelInvoke("BreakDatabase");
+        GameObject.Find("DatabaseWall").GetComponent<SpriteRenderer>().enabled = false;
+        audioSource.PlayOneShot(failureSound);
+        GameObject breach = (GameObject)Instantiate(bigDataStoreBreach, new Vector2(0f, -6f), Quaternion.identity);
+    }
+
+    private void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
     }
 
     private void IncreaseDifficulty()
@@ -197,15 +227,5 @@ public class GameMode : MonoBehaviour
     public float GetCurrentSinglePortPercentage()
     {
         return curSinglePortPercent;
-    }
-
-    public bool isPaused()
-    {
-        return paused;
-    }
-
-    public void setPaused(bool pause)
-    {
-        paused = pause;
     }
 }

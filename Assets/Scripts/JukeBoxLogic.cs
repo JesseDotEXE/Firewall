@@ -45,7 +45,7 @@ public class JukeBoxLogic : MonoBehaviour
         {
             audioSource.clip = GetRandomPlayingSong();
             audioSource.Play();
-            audioSource.loop = false;
+            audioSource.loop = true;
         }
         if(level == 5)
         {
@@ -66,6 +66,11 @@ public class JukeBoxLogic : MonoBehaviour
             return playingMusic3;
         else
             return playingMusic1;
+    }
+
+    public void StopPlaying()
+    {
+        audioSource.Stop();
     }
 
 	// Update is called once per frame

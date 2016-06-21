@@ -103,56 +103,9 @@ public class SpawnManager : MonoBehaviour
 
         SpawnDataPacket();
         spawnList.RemoveAt(0);
-
-        //int numPorts = rand.Next(100) + 1;
-        //if(numPorts < singlePortPercent) 
-        //{
-        //    //Spawn into 1 queue.
-        //    int portToUse = spawnList[0];
-            
-
-        //    if (portToUse == 1) { SpawnDataPacket(spawnPoint1); }
-        //    if (portToUse == 2) { SpawnDataPacket(spawnPoint2); }
-        //    if (portToUse == 3) { SpawnDataPacket(spawnPoint3); }
-
-        //    spawnList.RemoveAt(0);
-        //} 
-        //else 
-        //{
-        //    //Spawn into 2 queues.
-        //    int portToUse1 = spawnList[0];
-        //    int portToUse2 = spawnList[1];
-
-        //    //Fix same port collision.
-        //    if (portToUse1 == portToUse2)
-        //    {
-        //        int plusOrMin = rand.Next(2);
-        //        if (plusOrMin == 0)
-        //        {
-        //            if (portToUse1 == 1) { portToUse2 = 3; }
-        //            else portToUse2--;
-        //        }
-        //        else
-        //        {
-        //            if (portToUse1 == 3) { portToUse2 = 1; }
-        //            else portToUse2++;
-        //        }
-        //    }
-
-        //    if (portToUse1 == 1) { SpawnDataPacket(spawnPoint1); }
-        //    if (portToUse1 == 2) { SpawnDataPacket(spawnPoint2); }
-        //    if (portToUse1 == 3) { SpawnDataPacket(spawnPoint3); }
-
-        //    if (portToUse2 == 1) { SpawnDataPacket(spawnPoint1); }
-        //    if (portToUse2 == 2) { SpawnDataPacket(spawnPoint2); }
-        //    if (portToUse2 == 3) { SpawnDataPacket(spawnPoint3); }
-
-        //    spawnList.RemoveAt(0);
-        //    spawnList.RemoveAt(0);
-        //} 
     }
 
-    void SpawnDataPacket()
+    GameObject SpawnDataPacket()
     {
         //Between -2.35 and 3.35
         float spawnX = UnityEngine.Random.Range(-2.35f, 3.35f);
@@ -203,7 +156,7 @@ public class SpawnManager : MonoBehaviour
         }
 
         DownwardMovment downMove = newObj.GetComponent<DownwardMovment>();
-        downMove.speed = objSpeed;
+        downMove.speed = objSpeed;      
 
         ParticleSystem particleSys = newObj.GetComponent<ParticleSystem>();
         particleSys.startSpeed = objSpeed * 2;
@@ -212,7 +165,9 @@ public class SpawnManager : MonoBehaviour
         //Ignore 0 because it is black in our enum.
         int color = rand.Next(1, 8);
         dpl.SetPacketColor(color);
-        dpl.SetSides(spriteNum);
+        dpl.SetSides(spriteNum);      
+
+        return newObj;
     }
 
     public void StopSpawningObjects()

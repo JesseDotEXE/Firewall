@@ -26,8 +26,9 @@ public class Screenshake : MonoBehaviour
     {
         if (coll.gameObject.layer == LayerMask.NameToLayer("FallingObject"))
         {
-            redScreen.GetComponent<Image>().color = new Color(1f, 0f, 0f, 0.25f);
-            shakeAmt = 0.025f;
+            //redScreen.GetComponent<Image>().color = new Color(1f, 0f, 0f, 0.25f);
+            //shakeAmt = 0.025f;
+            shakeAmt = 0.05f;
             InvokeRepeating("CameraShake", 0, .005f);
             Invoke("StopShaking", 0.175f);
         }
@@ -44,7 +45,7 @@ public class Screenshake : MonoBehaviour
 
     void StopShaking()
     {
-        redScreen.GetComponent<Image>().color = new Color(1f, 0f, 0f, 0f);
+        //redScreen.GetComponent<Image>().color = new Color(1f, 0f, 0f, 0f);
         CancelInvoke("CameraShake");
         mainCamera.transform.position = originalCameraPosition;
     }
