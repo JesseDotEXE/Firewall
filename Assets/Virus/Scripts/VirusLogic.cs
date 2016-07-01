@@ -1,26 +1,13 @@
-﻿using UnityEngine;
+﻿//Author: Jesus Villagomez - JesseDotEXE
+//References: 
+//N/A
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class VirusLogic : MonoBehaviour 
+public class VirusLogic : MonoBehaviour
 {
-    //Not sure where to put this
-    enum PacketColors{Black = 0, White, Red, Green, Blue, Yellow, Magenta, Cyan}
-    private int packetColor;
-    private int sides;
-    //private List<int> compositeColors;
-
-    private GameMode gameMode;
-    private SpriteRenderer spriteRenderer;
-    private ParticleSystemRenderer particleRenderer;
-    private ParticleSystem particleSys;
-    private ScoreManager scoreManager;
-
-    public GameObject explosion;
-    private ParticleSystem explosionSys;
-
-    public GameObject dataStoreBreach;
-
     public Material threeMat;
     public Material fourMat;
     public Material fiveMat;
@@ -29,36 +16,50 @@ public class VirusLogic : MonoBehaviour
     public Material eightMat;
     public Material nineMat;
 
-    private bool harmless;
+    public GameObject explosion;
+
+    public AudioClip explodeSFX;
+
+    private GameMode gameMode;
+    private BreachManager breachManager;
+
+    private SpriteRenderer spriteRenderer;
+    private ParticleSystem particleSys;
+    private ParticleSystem explosionSys;
+    private ParticleSystemRenderer particleRenderer;
 
     private AudioSource audioSource;
-    public AudioClip explodeSFX;
-    public AudioClip dataBreachSFX;
 
-	// Use this for initialization
-	void Awake () 
+    private int virusColor = 1;
+    private int sides;
+
+    private bool harmless;
+
+    void Awake()
     {
         gameMode = GameObject.Find("GameMode").GetComponent<GameMode>();
+        breachManager = GameObject.Find("Database").GetComponent<BreachManager>();
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         particleSys = GetComponent<ParticleSystem>();
         particleRenderer = GetComponent<ParticleSystemRenderer>();
-        scoreManager = gameMode.GetComponent<ScoreManager>();
+
         audioSource = GetComponent<AudioSource>();
+
         harmless = false;
-        //compositeColors = new List<int>();
+
         InitializeColors();
         InitializeSides();
     }
-	
-	// Update is called once per frame
-	void Update () 
+
+    void Update()
     {
-	    if(packetColor == (int)PacketColors.Black)
+        if(virusColor == (int)GlobalData.PacketColors.Black)
         {
             harmless = true;
-            Destroy(gameObject, 2.0f);
+            Destroy(gameObject, 3.0f);
         }
-	}
+    }
 
     void InitializeSides()
     {
@@ -66,27 +67,27 @@ public class VirusLogic : MonoBehaviour
         {
             particleRenderer.material = threeMat;
         }
-        else if (sides == 4)
+        else if(sides == 4)
         {
             particleRenderer.material = fourMat;
         }
-        else if (sides == 5)
+        else if(sides == 5)
         {
             particleRenderer.material = fiveMat;
         }
-        else if (sides == 6)
+        else if(sides == 6)
         {
             particleRenderer.material = sixMat;
         }
-        else if (sides == 7)
+        else if(sides == 7)
         {
             particleRenderer.material = sevenMat;
         }
-        else if (sides == 8)
+        else if(sides == 8)
         {
             particleRenderer.material = eightMat;
         }
-        else if (sides == 9)
+        else if(sides == 9)
         {
             particleRenderer.material = nineMat;
         }
@@ -94,84 +95,69 @@ public class VirusLogic : MonoBehaviour
 
     void InitializeColors()
     {
-        if (packetColor == (int)PacketColors.White)
+        if(virusColor == (int)GlobalData.PacketColors.White)
         {
-            //explosionSys.startColor = Color.white;
             spriteRenderer.material.color = Color.white;
             particleSys.startColor = Color.white;
         }
-        else if (packetColor == (int)PacketColors.Red)
+        else if(virusColor == (int)GlobalData.PacketColors.Red)
         {
-            //explosionSys.startColor = Color.red;
             spriteRenderer.material.color = Color.red;
             particleSys.startColor = Color.red;
         }
-        else if (packetColor == (int)PacketColors.Green)
+        else if(virusColor == (int)GlobalData.PacketColors.Green)
         {
-            //explosionSys.startColor = Color.green;
             spriteRenderer.material.color = Color.green;
             particleSys.startColor = Color.green;
         }
-        else if (packetColor == (int)PacketColors.Blue)
+        else if(virusColor == (int)GlobalData.PacketColors.Blue)
         {
-            //explosionSys.startColor = Color.blue;
             spriteRenderer.material.color = Color.blue;
             particleSys.startColor = Color.blue;
         }
-        else if (packetColor == (int)PacketColors.Yellow)
+        else if(virusColor == (int)GlobalData.PacketColors.Yellow)
         {
-            //explosionSys.startColor = Color.yellow;
             spriteRenderer.material.color = Color.yellow;
             particleSys.startColor = Color.yellow;
         }
-        else if (packetColor == (int)PacketColors.Magenta)
+        else if(virusColor == (int)GlobalData.PacketColors.Magenta)
         {
-            //explosionSys.startColor = Color.magenta;
             spriteRenderer.material.color = Color.magenta;
             particleSys.startColor = Color.magenta;
         }
-        else if (packetColor == (int)PacketColors.Cyan)
+        else if(virusColor == (int)GlobalData.PacketColors.Cyan)
         {
-            //explosionSys.startColor = Color.cyan;
             spriteRenderer.material.color = Color.cyan;
             particleSys.startColor = Color.cyan;
-        }        
-    }
-    
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        if(coll.gameObject.layer == LayerMask.NameToLayer("DataStore")) 
-        {
-            gameMode.GetScoreManager().ResetCombo();
-            gameMode.GetScoreManager().ResetComboCount();
-            gameMode.GetScoreManager().DecreaseLives();            
-            SpawnDataStoreBreach();
-            audioSource.PlayOneShot(dataBreachSFX, 1);
         }
     }
 
-    private void SpawnDataStoreBreach()
+    void OnCollisionEnter2D(Collision2D coll)
     {
-        GameObject breach = (GameObject)Instantiate(dataStoreBreach, transform.position, Quaternion.identity);
+        if(coll.gameObject.layer == LayerMask.NameToLayer("DataStore"))
+        {
+            breachManager.SpawnBreachSmall(transform.position);
+            gameMode.DecreaseLives();
+        }
     }
 
     public void CheckColor(int swipeColor)
     {
-        if(swipeColor == packetColor)
+        if(swipeColor == virusColor)
         {
             Explode();
         }
-        else 
+        else
         {
             //Bad Stuff
-            gameMode.GetScoreManager().ResetComboCount();
-            //Play screenshake or something.
+            gameMode.BreakStreak();
         }
     }
 
     public void Explode()
     {
-         
+        gameMode.AddPoints();
+
         GameObject tempPSys = (GameObject)Instantiate(explosion, transform.position, Quaternion.identity);
         explosionSys = tempPSys.GetComponent<ParticleSystem>();
         SetExplosionColor();
@@ -183,51 +169,44 @@ public class VirusLogic : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
 
-        gameMode.GetScoreManager().AddPoints();
-
         Destroy(gameObject, 0.5f);
     }
 
     private void SetExplosionColor()
     {
-        if (packetColor == (int)PacketColors.White)
+        if(virusColor == (int)GlobalData.PacketColors.White)
         {
             explosionSys.startColor = Color.white;
         }
-        else if (packetColor == (int)PacketColors.Red)
+        else if(virusColor == (int)GlobalData.PacketColors.Red)
         {
             explosionSys.startColor = Color.red;
         }
-        else if (packetColor == (int)PacketColors.Green)
+        else if(virusColor == (int)GlobalData.PacketColors.Green)
         {
             explosionSys.startColor = Color.green;
         }
-        else if (packetColor == (int)PacketColors.Blue)
+        else if(virusColor == (int)GlobalData.PacketColors.Blue)
         {
             explosionSys.startColor = Color.blue;
         }
-        else if (packetColor == (int)PacketColors.Yellow)
+        else if(virusColor == (int)GlobalData.PacketColors.Yellow)
         {
             explosionSys.startColor = Color.yellow;
         }
-        else if (packetColor == (int)PacketColors.Magenta)
+        else if(virusColor == (int)GlobalData.PacketColors.Magenta)
         {
             explosionSys.startColor = Color.magenta;
         }
-        else if (packetColor == (int)PacketColors.Cyan)
+        else if(virusColor == (int)GlobalData.PacketColors.Cyan)
         {
             explosionSys.startColor = Color.cyan;
         }
     }
 
-    public int GetPacketColor()
+    public void SetColor(int color)
     {
-        return packetColor;
-    }
-
-    public void SetPacketColor(int color)
-    {
-        packetColor = color;
+        virusColor = color;
         InitializeColors();
     }
 

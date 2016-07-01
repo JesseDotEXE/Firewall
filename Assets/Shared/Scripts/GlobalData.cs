@@ -1,47 +1,41 @@
-﻿using UnityEngine;
+﻿//Author: Jesus Villagomez - JesseDotEXE
+//References: N/A
+
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class GlobalData : MonoBehaviour 
+public class GlobalData : MonoBehaviour
 {
-    public int difficulty;
-    public float objMoveSpeed;
-    public float spawnInterval;
-    public float singlePortPercent;
-    public float difficultyMod;
-    public bool soundOn;
-    public bool buttonFlip;
-    public System.Random globRandom;
-    public int finalScore;
-
+    public System.Random globalRandom;
+    public Dictionary<string, float> globalVars;
+    public enum GlobalTextVariable { VirusSpeed = 0, Score, Combo, MaxStreak, GameTimer };
     public enum PacketColors { Black = 0, White, Red, Green, Blue, Yellow, Magenta, Cyan }
 
-    //Nothing at the moment.
-    //May not be needed.
     void Awake()
     {
-        globRandom = new System.Random();
-        soundOn = true;
-        buttonFlip = false;
-        finalScore = 0;
         DontDestroyOnLoad(transform.gameObject);
-    }
-
-    void Start()
-    {
-        if(difficulty == 1)
-        {
-            objMoveSpeed = 0f;
-        }
-        else if(difficulty == 2)
-        {
-            objMoveSpeed = 0f;
-        }
+        ResetData();
     }
 
     public void ResetData()
     {
-        globRandom = new System.Random();
-        finalScore = 0;
-        DontDestroyOnLoad(transform.gameObject);
+        globalRandom = new System.Random();
+        globalVars = new Dictionary<string, float>();
+
+        globalVars.Add("virusSpeed", 0f);
+        globalVars.Add("score", 0f);
+        globalVars.Add("combo", 0f);
+        globalVars.Add("maxStreak", 0f);
+        globalVars.Add("gameTimer", 0f);
+    }
+
+    public void CleanUpGameObject(string tag)
+    {
+        GameObject[] goList = GameObject.FindGameObjectsWithTag(tag);
+        for(int i = 0; i < goList.Length; i++)
+        {
+            goList[i].SetActive(false);
+        }
     }
 }

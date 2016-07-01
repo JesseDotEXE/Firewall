@@ -6,246 +6,196 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameMode : MonoBehaviour 
+public class GameMode : MonoBehaviour
 {
-    private Image fadeScreen;
-    public float fadeSpeed = 2f;
-
     private GlobalData globalData;
-    private ScoreManager scoreManager;
     private SpawnManager spawnManager;
-    private AudioSource audioSource;
-    private JukeBoxLogic jukeBoxLogic;
-    
-    public GameObject colorButtons;
-    public GameObject redScreen;
-    public GameObject bigDataStoreBreach;
-    public GameObject databaseBreak;
+    private BreachManager breachManager;
+    private MusicManager musicManager;
 
     private float gameTimer;
-    private float maxGameTime;
-    private float difficultyTimer;
-    private float difficultyTimeInterval;
 
-    //These values get set by difficulty.
-    private float curObjSpeed;
-    private float curSpawnInterval;
-    private float curSinglePortPercent;
-    private float difficultyMod;
+    public float virusSpeed = 3.75f;
+    public float virusSpawnInterval = 2f;
+    public float virusMultiSpawn = 10f;
+    public float difficultyTimeInterval = 5f;
+    public float difficultyModNum = 0.25f;
+
+    private float difficultyTimer;
     private int attributeToIncrease;
 
+    private float spawnTimer;
+
+    public int lives = 3;
+    public int pointsPerVirus = 1;
+    public int comboCount = 1;
+
     private bool levelEnded;
+    private int score;
+    private int combo;
+    private int streak;
+    private int maxStreak;
+    private int maxCombo;
 
-    public AudioClip breakSound;
-    public AudioClip failureSound;
-
-
-    // Use this for initialization
-    void Awake () 
+    void Awake()
     {
-        //DontDestroyOnLoad(transform.gameObject);
-        scoreManager = GetComponent<ScoreManager>();
-        spawnManager = GetComponent<SpawnManager>();
-        audioSource = GetComponent<AudioSource>();
-        jukeBoxLogic = GameObject.Find("JukeBox").GetComponent<JukeBoxLogic>();
-        fadeScreen = GameObject.Find("FadeScreen").GetComponent<Image>();
-
-        ReadGlobalData();
-
-        SetButtonPosition(globalData.buttonFlip);
-
-        levelEnded = false;
-
-        gameTimer = 0f;       
-        difficultyTimer = 0f;
-        difficultyTimeInterval = 5f;
-
-        attributeToIncrease = 0;        
+        SetupComponents();
+        SetupTiming();
+        SetupDifficulty();
+        SetupScoring();
+        SetupSpawning();
     }
-	
-	// Update is called once per frame
-	void Update () 
+
+    void Update()
     {
-        if (!levelEnded)
+        UpdateGlobalData();
+
+        if(!levelEnded)
         {
             gameTimer += Time.deltaTime;
             difficultyTimer += Time.deltaTime;
+            spawnTimer += Time.deltaTime;
 
-            if (scoreManager.GetLives() <= 0)
+            if(lives <= 0)
             {
-                CleanUpGameObject("Virus");
                 EndLevel();
             }
 
-            if (difficultyTimer >= difficultyTimeInterval)
+            if(difficultyTimer >= difficultyTimeInterval)
             {
-                if (attributeToIncrease <= 21)
+                //Limits difficulty
+                if(attributeToIncrease <= 21)
                 {
                     IncreaseDifficulty();
                     difficultyTimer = 0f;
                 }
             }
-        }
-	}
 
-    private void CleanUpGameObject(string tag)
-    {
-        GameObject[] goList = GameObject.FindGameObjectsWithTag(tag);
-        for (int i = 0; i < goList.Length; i++)
-        {
-            goList[i].SetActive(false);
+            if(spawnTimer >= virusSpawnInterval)
+            {
+                SpawnViruses();
+                spawnTimer = 0f;
+            }
         }
+    }
+
+    private void SetupComponents()
+    {
+        globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
+        spawnManager = GetComponent<SpawnManager>();
+        breachManager = GameObject.Find("Database").GetComponent<BreachManager>();
+        musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+    }
+
+    private void SetupTiming()
+    {
+        gameTimer = 0f;
+    }
+
+    private void SetupDifficulty()
+    {
+        difficultyTimer = 0f;
+        attributeToIncrease = 0;
+    }
+
+    private void SetupScoring()
+    {
+        levelEnded = false;
+        score = 0;
+        combo = 1;
+        streak = 0;
+        maxCombo = 0;
+    }
+
+    private void SetupSpawning()
+    {
+        spawnTimer = 0f;
+    }
+
+    private void UpdateGlobalData()
+    {
+        globalData.globalVars["virusSpeed"] = virusSpeed;
+        globalData.globalVars["score"] = score;
+        globalData.globalVars["combo"] = combo;
+        globalData.globalVars["maxStreak"] = maxStreak;
+        globalData.globalVars["gameTimer"] = gameTimer;
     }
 
     private void EndLevel()
     {
         levelEnded = true;
-        jukeBoxLogic.StopPlaying();
-        spawnManager.StopSpawningObjects();
-
-        //Repeat 3 times, shoot 1 final virus at 3x speed.
-        //Upon impact it will play the big explosion on the wall.
-        //Then play failure sound and spawn giant data leak.
-        InvokeRepeating("BreakDatabase", 0, 0.65f);
-        Invoke("CreateDataLeak", 3f);
-        Invoke("GameOver", 5f);
-
+        globalData.CleanUpGameObject("Virus");
+        musicManager.StopPlaying();
+        breachManager.DestroyDatabase();
     }
 
-    void BreakDatabase()
+    private void SpawnViruses()
     {
-        audioSource.PlayOneShot(breakSound);
-        GameObject dbBreak = (GameObject)Instantiate(databaseBreak, new Vector2(0f, -5.75f), Quaternion.identity);
-    }
+        //Get amount of viruses to spawn.
+        float multiSpawn = globalData.globalRandom.Next(1, 100);
 
-    void CreateDataLeak()
-    {
-        CleanUpGameObject("Breach");
-        CancelInvoke("BreakDatabase");
-        GameObject.Find("DatabaseWall").GetComponent<SpriteRenderer>().enabled = false;
-        audioSource.PlayOneShot(failureSound);
-        GameObject breach = (GameObject)Instantiate(bigDataStoreBreach, new Vector2(0f, -6f), Quaternion.identity);
-    }
-
-    private void GameOver()
-    {
-        InvokeRepeating("FadeOut", 0f, 0.02f);
-        Invoke("DelayedSceneLoad", fadeSpeed);
-    }
-
-    public void FadeOut()
-    {
-        fadeScreen.color = Color.Lerp(fadeScreen.color, Color.black, fadeSpeed * Time.deltaTime);
-    }
-
-    public void DelayedSceneLoad()
-    {
-        //yield return new WaitForSeconds(3f);
-        CancelInvoke("FadeOut");
-        SceneManager.LoadScene("GameOver");
+        if(multiSpawn < virusMultiSpawn)
+        {
+            float numVirusToSpawn = globalData.globalRandom.Next(2, 4);
+            while(numVirusToSpawn > 0)
+            {
+                spawnManager.SpawnVirus();
+                numVirusToSpawn -= 1;
+            }
+        }
+        else
+        {
+            spawnManager.SpawnVirus();
+        }
     }
 
     private void IncreaseDifficulty()
     {
+        //Might want to randomize.
         int attribute = attributeToIncrease % 3;
-                
+
         if(attribute == 0)
         {
-            curObjSpeed += difficultyMod;
+            virusSpeed += difficultyModNum;
         }
         else if(attribute == 1)
         {
-            curSpawnInterval -= difficultyMod;
+            virusSpawnInterval -= difficultyModNum;
         }
         else if(attribute == 2)
         {
-            curSinglePortPercent -= (difficultyMod * 20f);
-        }        
+            virusMultiSpawn += (difficultyModNum * 8);
+        }
 
-        //Send to SpawnManager
-        spawnManager.UpdateDifficulty();
         attributeToIncrease++;
     }
 
-    private void ReadGlobalData()
+    public void DecreaseLives()
     {
-        globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
-        
-        if(globalData.difficulty != 0)
-        {
-            if(globalData.difficulty == 1)
-            {
-                //Play around with.
-                curObjSpeed = 3.75f;
-                curSpawnInterval = 2.0f;
-                curSinglePortPercent = 75.0f;
-                difficultyMod = 0.25f;
-            }
-            else if(globalData.difficulty == 2)
-            {
-                //Play around with.
-                curObjSpeed = 4.5f;
-                curSpawnInterval = 1.75f;
-                curSinglePortPercent = 75.0f;                
-                difficultyMod = 0.25f;
-            }
-        }
-        //Allow manually setting of data.
-        else 
-        {
-            curObjSpeed = globalData.objMoveSpeed;
-            curSpawnInterval = globalData.spawnInterval;
-            curSinglePortPercent = globalData.singlePortPercent;
-            difficultyMod = globalData.difficultyMod;
-            //Don't have a box for it yet.
-            difficultyMod = 0.25f;
-        }        
+        lives--;
+        streak = 0;
+        combo = 1;
     }
 
-    private void SetButtonPosition(bool flipped)
+    public void AddPoints()
     {
-        if(flipped)
+        score = score + (pointsPerVirus * combo);
+        Debug.Log("Score: " + score);
+        streak++;
+
+        if(streak > maxStreak)
         {
-            colorButtons.GetComponent<Transform>().position = new Vector2(3.5f, 0f);  
+            maxStreak = streak;
         }
-        else
+
+        if((streak % comboCount) == 0)
         {
-            colorButtons.GetComponent<Transform>().position = new Vector2(-3.5f, 0f);
+            combo++;
         }
     }
 
-    public float GetGameTimer()
+    public void BreakStreak()
     {
-        return gameTimer;
-    }
-    
-    public ScoreManager GetScoreManager()
-    {
-        return scoreManager;
-    }
-
-    public SpawnManager GetSpawnManager()
-    {
-        return spawnManager;
-    }
-
-    public GlobalData GetGlobalData()
-    {
-        return globalData;
-    }
-
-    public float GetCurrentObjSpeed()
-    { 
-        return curObjSpeed;
-    }
-
-    public float GetCurrentSpawnInterval()
-    {
-        return curSpawnInterval;
-    }
-
-    public float GetCurrentSinglePortPercentage()
-    {
-        return curSinglePortPercent;
+        streak = 0;
     }
 }

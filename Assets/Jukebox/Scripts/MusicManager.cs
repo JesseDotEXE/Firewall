@@ -1,41 +1,37 @@
-﻿using UnityEngine;
+﻿//Author: Jesus Villagomez - JesseDotEXE
+//References: N/A
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class JukeBoxLogic : MonoBehaviour 
+public class MusicManager : MonoBehaviour
 {
-    private GlobalData globalData;
-
-    private AudioSource audioSource;
-
     public AudioClip menuMusic;
     public AudioClip playingMusic1;
     public AudioClip playingMusic2;
     public AudioClip playingMusic3;
     public AudioClip endMusic;
 
+    private GlobalData globalData;
+    private AudioSource audioSource;
+
     void Awake()
     {
+        DontDestroyOnLoad(transform.gameObject);
+
         globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
         audioSource = GetComponent<AudioSource>();
-        DontDestroyOnLoad(transform.gameObject);
+
         gameObject.SendMessage("OnLevelWasLoaded", SceneManager.GetActiveScene().buildIndex);
     }
 
-	// Use this for initialization
-	void Start () 
-    {
-        
-	}
-
     void OnLevelWasLoaded(int level)
     {
-        if (level == 1)
+        if(level == 1)
         {
-            Debug.Log("isPlaying::" + audioSource.isPlaying);
-            if (!audioSource.isPlaying)
+            if(!audioSource.isPlaying)
             {
-                Debug.Log("Started Playing");
                 audioSource.clip = menuMusic;
                 audioSource.Play();
                 audioSource.loop = true;
@@ -54,27 +50,30 @@ public class JukeBoxLogic : MonoBehaviour
             audioSource.loop = true;
         }
     }
-	
+
     AudioClip GetRandomPlayingSong()
     {
-        int randomSong = globalData.globRandom.Next(1, 3);
-        if (randomSong == 1)
+        int randomSong = globalData.globalRandom.Next(1, 3);
+        if(randomSong == 1)
+        {
             return playingMusic1;
-        else if (randomSong == 2)
+        }
+        else if(randomSong == 2)
+        {
             return playingMusic2;
-        else if (randomSong == 3)
+        }
+        else if(randomSong == 3)
+        {
             return playingMusic3;
+        }
         else
+        {
             return playingMusic1;
+        }
     }
 
     public void StopPlaying()
     {
         audioSource.Stop();
     }
-
-	// Update is called once per frame
-	void Update () 
-    {
-	}
 }

@@ -6,13 +6,11 @@ using System.Collections;
 
 public class WatchAd : MonoBehaviour 
 {
-    //========== Unity Methods Begin ==========//
     void Start () 
     {
 	
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
 	
@@ -22,5 +20,4 @@ public class WatchAd : MonoBehaviour
     {
 
     }
-    //========== Unity Methods End ==========//
 }

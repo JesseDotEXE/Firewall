@@ -5,52 +5,34 @@ using UnityEngine.UI;
 
 public class ListenForTap : MonoBehaviour
 {
-    private Image fadeScreen;
-    public float fadeSpeed = 2f;
-    private AudioSource audioSource;
     public AudioClip transitionSFX;
 
-    public string sceneToLoad;
+    private SceneChange sceneChange;
+    private AudioSource audioSource;
 
-    // Use this for initialization
     void Start()
     {
+        sceneChange = GetComponent<SceneChange>();
         audioSource = GetComponent<AudioSource>();
-        fadeScreen = GameObject.Find("FadeScreen").GetComponent<Image>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount == 1)
+        if(Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            if(touch.phase == TouchPhase.Began)
             {
                 audioSource.PlayOneShot(transitionSFX, 1);
-                InvokeRepeating("FadeOut", 0f, 0.02f);
-                Invoke("DelayedSceneLoad", fadeSpeed);
+                sceneChange.ChangeScene();
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0))
         {
             audioSource.PlayOneShot(transitionSFX, 1);
-            InvokeRepeating("FadeOut", 0f, 0.02f);
-            Invoke("DelayedSceneLoad", fadeSpeed);
+            sceneChange.ChangeScene();
         }
-    }
-
-    public void DelayedSceneLoad()
-    {
-        //yield return new WaitForSeconds(3f);
-        CancelInvoke("FadeOut");
-        SceneManager.LoadScene(sceneToLoad);
-    }
-
-    public void FadeOut()
-    {
-        fadeScreen.color = Color.Lerp(fadeScreen.color, Color.black, fadeSpeed * Time.deltaTime);
     }
 }

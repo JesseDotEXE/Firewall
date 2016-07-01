@@ -6,28 +6,22 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneChange : MonoBehaviour 
+public class SceneChange : MonoBehaviour
 {
-    private Image fadeScreen;
-    public float fadeSpeed; //Was 2f
+    public float fadeSpeed;
     public string sceneToLoad;
 
-    //========== Unity Methods Begin ==========//
+    private Image fadeScreen;
+
     void Start()
     {
         fadeScreen = GameObject.Find("FadeScreen").GetComponent<Image>();
-    }
-    
-    void Update()
-    {
-
     }
 
     public void OnClick()
     {
         ChangeScene();
     }
-    //========== Unity Methods End ==========//
 
     public void ChangeScene()
     {
@@ -42,7 +36,6 @@ public class SceneChange : MonoBehaviour
 
     public void DelayedSceneLoad()
     {
-        //yield return new WaitForSeconds(3f);
         CancelInvoke("FadeOut");
         SceneManager.LoadScene(sceneToLoad);
     }

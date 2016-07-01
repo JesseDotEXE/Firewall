@@ -1,19 +1,14 @@
-﻿using UnityEngine;
+﻿//Author: Jesus Villagomez - JesseDotEXE
+//References: N/A
+
+using UnityEngine;
 using System.Collections;
 
-public class DownwardMovment : MonoBehaviour 
+public class DownwardMovment : MonoBehaviour
 {
     public float speed;
 
-	// Use this for initialization
-	void Start () 
-    {
-        //Will eventually set private.
-        //speed = 0;
-	}
-	
-	// Update is called once per frame
-	void Update () 
+    void Update()
     {
         float step = speed * Time.deltaTime;
         Vector3 pos = this.gameObject.transform.position;

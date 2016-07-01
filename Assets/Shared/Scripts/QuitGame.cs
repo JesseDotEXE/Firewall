@@ -5,9 +5,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
-public class QuitGame : MonoBehaviour 
+public class QuitGame : MonoBehaviour
 {
-    //========== Unity Methods Begin ==========//
     void Start()
     {
 
@@ -22,7 +21,6 @@ public class QuitGame : MonoBehaviour
     {
         StartCoroutine(DelayedQuit());
     }
-    //========== Unity Methods End ==========//
 
     public IEnumerator DelayedQuit()
     {
