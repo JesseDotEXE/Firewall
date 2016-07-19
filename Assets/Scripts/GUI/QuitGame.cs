@@ -3,7 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
-using UnityEditor;
+//using UnityEditor;
 
 public class QuitGame : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class QuitGame : MonoBehaviour
     public IEnumerator DelayedQuit()
     {
         yield return new WaitForSeconds(.35f);
-        EditorApplication.isPlaying = false;
+        //EditorApplication.isPlaying = false;
         Application.Quit();
     }
 }
