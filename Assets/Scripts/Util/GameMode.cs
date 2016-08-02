@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class GameMode : MonoBehaviour
 {
     private GlobalData globalData;
+    private GooglePlayData googlePlayData;
     private SpawnManager spawnManager;
     private BreachManager breachManager;
     private MusicManager musicManager;
@@ -44,6 +45,7 @@ public class GameMode : MonoBehaviour
         SetupDifficulty();
         SetupScoring();
         SetupSpawning();
+        googlePlayData.FirstTimeAchievementUnlock();
     }
 
     void Update()
@@ -82,6 +84,7 @@ public class GameMode : MonoBehaviour
     private void SetupComponents()
     {
         globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
+        googlePlayData = GameObject.Find("GooglePlay").GetComponent<GooglePlayData>();
         spawnManager = GetComponent<SpawnManager>();
         breachManager = GameObject.Find("Database").GetComponent<BreachManager>();
         musicManager = GameObject.Find("MusicManager").GetComponent<MusicManager>();
@@ -110,6 +113,24 @@ public class GameMode : MonoBehaviour
     private void SetupSpawning()
     {
         spawnTimer = 0f;
+    }
+
+    private void CheckForAchievements()
+    {
+        if(score >= 100)
+        {
+            googlePlayData.HighScore100AchievementUnlock();
+        }
+
+        if(combo >= 10)
+        {
+            googlePlayData.Combo10AchievementUnlock();
+        }
+
+        if(gameTimer >= 60)
+        {
+            googlePlayData.MinuteManAchievementUnlock();
+        }
     }
 
     private void UpdateGlobalData()

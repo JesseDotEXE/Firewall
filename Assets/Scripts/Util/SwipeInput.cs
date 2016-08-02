@@ -53,8 +53,8 @@ public class SwipeInput : MonoBehaviour
 
     void Update()
     {
-        CheckTouchInput();
-        //CheckMKBInput();
+        //CheckTouchInput();
+        CheckMKBInput();
     }
 
     void OnCollisionEnter2D(Collision2D coll)
