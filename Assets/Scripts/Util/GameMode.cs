@@ -45,7 +45,10 @@ public class GameMode : MonoBehaviour
         SetupDifficulty();
         SetupScoring();
         SetupSpawning();
-        googlePlayData.FirstTimeAchievementUnlock();
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            googlePlayData.FirstTimeAchievementUnlock();
+        }
     }
 
     void Update()
@@ -119,17 +122,26 @@ public class GameMode : MonoBehaviour
     {
         if(score >= 100)
         {
-            googlePlayData.HighScore100AchievementUnlock();
+            if(Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.HighScore100AchievementUnlock();
+            }
         }
 
         if(combo >= 10)
         {
-            googlePlayData.Combo10AchievementUnlock();
+            if(Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.Combo10AchievementUnlock();
+            }
         }
 
         if(gameTimer >= 60)
         {
-            googlePlayData.MinuteManAchievementUnlock();
+            if(Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.MinuteManAchievementUnlock();
+            }
         }
     }
 

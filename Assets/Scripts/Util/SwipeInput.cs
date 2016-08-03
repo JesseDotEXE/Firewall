@@ -53,8 +53,14 @@ public class SwipeInput : MonoBehaviour
 
     void Update()
     {
-        //CheckTouchInput();
-        CheckMKBInput();
+        if(Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            CheckTouchInput();
+        }
+        else
+        {
+            CheckMKBInput();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -180,6 +186,7 @@ public class SwipeInput : MonoBehaviour
             }
             else
             {
+                Debug.Log("Didn't hit the button!");
                 if(redOn || greenOn || blueOn)
                 {
                     swipeActive = true;
@@ -230,7 +237,7 @@ public class SwipeInput : MonoBehaviour
             audioSource.PlayOneShot(colorToggleSFX, 1);
         }
 
-        Debug.Log("Updating Colors");
+        Debug.Log("Updating Color to " + newColor);
         if(newColor == (int)GlobalData.PacketColors.Red)
         {
             ToggleRed();

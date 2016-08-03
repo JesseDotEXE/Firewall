@@ -13,6 +13,9 @@ public class ShowAchievements : MonoBehaviour
 
     public void OnClick()
     {
-        googlePlayData.ShowAchievements();
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            googlePlayData.ShowAchievements();
+        }
     }
 }

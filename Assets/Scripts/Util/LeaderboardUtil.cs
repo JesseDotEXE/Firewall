@@ -12,6 +12,9 @@ public class LeaderboardUtil : MonoBehaviour
         globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
         googlePlayData = GameObject.Find("GooglePlayData").GetComponent<GooglePlayData>();
 
-        googlePlayData.PostScore((long)globalData.globalVars["score"]);    
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            googlePlayData.PostScore((long)globalData.globalVars["score"]);
+        }
 	}
 }

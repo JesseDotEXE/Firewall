@@ -13,6 +13,9 @@ public class ShowLeaderboards : MonoBehaviour
 
     public void OnClick()
     {
-        googlePlayData.ShowLeaderboards();
+        if(Application.platform == RuntimePlatform.Android)
+        {
+            googlePlayData.ShowLeaderboards();
+        }
     }
 }

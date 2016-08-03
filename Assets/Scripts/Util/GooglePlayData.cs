@@ -15,9 +15,11 @@ public class GooglePlayData : MonoBehaviour
 
     private void InitGooglePlayServices()
     {
-        PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();
-        ConnectToGooglePlayServices();
+        #if UNITY_ANDROID
+            PlayGamesPlatform.DebugLogEnabled = true;
+            PlayGamesPlatform.Activate();
+            ConnectToGooglePlayServices();
+        #endif
     }
 
     public void ConnectToGooglePlayServices()
