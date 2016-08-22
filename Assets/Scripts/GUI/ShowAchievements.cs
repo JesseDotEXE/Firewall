@@ -8,7 +8,7 @@ public class ShowAchievements : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        googlePlayData = GameObject.Find("GooglePlayData").GetComponent<GooglePlayData>();
+        googlePlayData = GameObject.Find("GooglePlay").GetComponent<GooglePlayData>();
     }
 
     public void OnClick()

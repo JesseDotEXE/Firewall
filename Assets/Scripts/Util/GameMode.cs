@@ -18,7 +18,7 @@ public class GameMode : MonoBehaviour
 
     public float virusSpeed = 3.75f;
     public float virusSpawnInterval = 2f;
-    public float virusMultiSpawn = 10f;
+    public float virusMultiSpawn = 5f;
     public float difficultyTimeInterval = 5f;
     public float difficultyModNum = 0.25f;
 
@@ -169,16 +169,20 @@ public class GameMode : MonoBehaviour
 
         if(multiSpawn < virusMultiSpawn)
         {
-            float numVirusToSpawn = globalData.globalRandom.Next(2, 4);
-            while(numVirusToSpawn > 0)
-            {
-                spawnManager.SpawnVirus();
-                numVirusToSpawn -= 1;
-            }
+            spawnManager.SpawnVirus(0);
+            spawnManager.SpawnVirus(1);
+
+            //Used for spawning 3 or more viruses.
+            //float numVirusToSpawn = globalData.globalRandom.Next(2, 4);
+            //while(numVirusToSpawn > 0)
+            //{
+            //    spawnManager.SpawnVirus(numVirusToSpawn);
+            //    numVirusToSpawn -= 1;
+            //}
         }
         else
         {
-            spawnManager.SpawnVirus();
+            spawnManager.SpawnVirus(0);
         }
     }
 

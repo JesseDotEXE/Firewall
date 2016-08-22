@@ -24,11 +24,16 @@ public class SpawnManager : MonoBehaviour
         globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
     }
 
-    public GameObject SpawnVirus()
+    public GameObject SpawnVirus(float multiSpawnOffset)
     {
         //Between -2.35 and 3.35
-        float spawnX = UnityEngine.Random.Range(-2.35f, 3.35f);
+        float spawnX = UnityEngine.Random.Range(-2f, 3.35f);
         float spawnY = 7.5f;
+        if(multiSpawnOffset > 0)
+        {
+            //This is just to slightly offset the mutli spawning so they are not all in the same spot.
+            spawnY = spawnY + multiSpawnOffset;
+        }
 
         GameObject newObj = null;
         newObj = (GameObject)Instantiate(virus, new Vector2(spawnX, spawnY), Quaternion.identity);

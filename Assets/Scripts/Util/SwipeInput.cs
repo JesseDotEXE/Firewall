@@ -12,6 +12,7 @@ public class SwipeInput : MonoBehaviour
     public GameObject redButton;
     public GameObject greenButton;
     public GameObject blueButton;
+    public GameObject colorSelectionIcon;
     public Sprite offButton;
     public Sprite onButton;
 
@@ -49,6 +50,7 @@ public class SwipeInput : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         GetComponent<CircleCollider2D>().enabled = false;
+        colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.black;
     }
 
     void Update()
@@ -255,43 +257,49 @@ public class SwipeInput : MonoBehaviour
         {
             trailRenderer.material.SetColor("_TintColor", white);
             color = (int)GlobalData.PacketColors.White;
-            //swipeCollision.SetSwipeColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.white;
             swipeActive = true;
         }
         else if(redOn && greenOn && !blueOn)
         {
             trailRenderer.material.SetColor("_TintColor", yellow);
             color = (int)GlobalData.PacketColors.Yellow;
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.yellow;
             swipeActive = true;
         }
         else if(redOn && !greenOn && blueOn)
         {
             trailRenderer.material.SetColor("_TintColor", magenta);
             color = (int)GlobalData.PacketColors.Magenta;
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.magenta;
             swipeActive = true;
         }
         else if(!redOn && greenOn && blueOn)
         {
             trailRenderer.material.SetColor("_TintColor", cyan);
             color = (int)GlobalData.PacketColors.Cyan;
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.cyan;
             swipeActive = true;
         }
         else if(redOn && !greenOn && !blueOn)
         {
             trailRenderer.material.SetColor("_TintColor", red);
             color = (int)GlobalData.PacketColors.Red;
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.red;
             swipeActive = true;
         }
         else if(!redOn && greenOn && !blueOn)
         {
             trailRenderer.material.SetColor("_TintColor", green);
             color = (int)GlobalData.PacketColors.Green;
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.green;
             swipeActive = true;
         }
         else if(!redOn && !greenOn && blueOn)
         {
             trailRenderer.material.SetColor("_TintColor", blue);
             color = (int)GlobalData.PacketColors.Blue;
+            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.blue;
             swipeActive = true;
         }
         else if(!redOn && !greenOn && !blueOn)
