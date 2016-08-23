@@ -25,7 +25,7 @@ public class SceneChange : MonoBehaviour
 
     public void ChangeScene()
     {
-        InvokeRepeating("FadeOut", 0f, 0.02f);
+        InvokeRepeating("FadeOut", 0f, 0.005f);
         Invoke("DelayedSceneLoad", fadeSpeed);
     }
 
