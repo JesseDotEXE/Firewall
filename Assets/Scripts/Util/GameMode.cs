@@ -18,12 +18,18 @@ public class GameMode : MonoBehaviour
 
     public float virusSpeed = 3.75f;
     public float virusSpawnInterval = 2f;
-    public float virusMultiSpawn = 5f;
-    public float difficultyTimeInterval = 5f;
+    public float virusMultiSpawn = 15f;
+    public float difficultyTimeInterval = 15f;
     public float difficultyModNum = 0.25f;
 
     private float difficultyTimer;
     private int attributeToIncrease;
+    private int currentDifficulty = 0;
+    private bool allowRGB = false;
+    private bool allowYCM = false;
+    private bool allowWhite = false;
+    private bool allowDouble = false;
+    private bool allowIncrease = false;
 
     private float spawnTimer;
 
@@ -102,6 +108,7 @@ public class GameMode : MonoBehaviour
     {
         difficultyTimer = 0f;
         attributeToIncrease = 0;
+        IncreaseDifficulty();
     }
 
     private void SetupScoring()
@@ -164,21 +171,18 @@ public class GameMode : MonoBehaviour
 
     private void SpawnViruses()
     {
-        //Get amount of viruses to spawn.
-        float multiSpawn = globalData.globalRandom.Next(1, 100);
+        //Set over so we will only spawn once unless allowDouble is allowed.
+        float doubleSpawn = 100;
+        
+        if (allowDouble)
+        {
+            doubleSpawn = globalData.globalRandom.Next(1, 100);
+        }
 
-        if(multiSpawn < virusMultiSpawn)
+        if(doubleSpawn < virusMultiSpawn)
         {
             spawnManager.SpawnVirus(0);
             spawnManager.SpawnVirus(1);
-
-            //Used for spawning 3 or more viruses.
-            //float numVirusToSpawn = globalData.globalRandom.Next(2, 4);
-            //while(numVirusToSpawn > 0)
-            //{
-            //    spawnManager.SpawnVirus(numVirusToSpawn);
-            //    numVirusToSpawn -= 1;
-            //}
         }
         else
         {
@@ -188,23 +192,53 @@ public class GameMode : MonoBehaviour
 
     private void IncreaseDifficulty()
     {
-        //Might want to randomize.
-        int attribute = attributeToIncrease % 3;
+        currentDifficulty++;
 
-        if(attribute == 0)
+        if(currentDifficulty == 1)
         {
-            virusSpeed += difficultyModNum;
+            allowRGB = true;
         }
-        else if(attribute == 1)
+        else if(currentDifficulty == 2)
         {
-            virusSpawnInterval -= difficultyModNum;
+            allowYCM = true;
         }
-        else if(attribute == 2)
+        else if(currentDifficulty == 3)
         {
-            virusMultiSpawn += (difficultyModNum * 8);
+            allowWhite = true;
+        }
+        else if(currentDifficulty == 4)
+        {
+            allowDouble = true;
+        }
+        else if(currentDifficulty == 5)
+        {
+            allowIncrease = true;
+            difficultyTimeInterval = 10f;
         }
 
-        attributeToIncrease++;
+        Debug.Log("Difficulty: " + allowRGB + " | " + allowYCM + " | " + allowWhite + " | " + allowDouble + " | " + allowIncrease);
+
+        //This is only used after the player has passed all the "stages".
+        if (allowIncrease)
+        {
+            //Might want to randomize.
+            int attribute = attributeToIncrease % 3;
+
+            if (attribute == 0)
+            {
+                virusSpeed += difficultyModNum;
+            }
+            else if (attribute == 1)
+            {
+                virusSpawnInterval -= (difficultyModNum * 0.5f);
+            }
+            else if (attribute == 2)
+            {
+                virusMultiSpawn += (difficultyModNum * 12);
+            }
+
+            attributeToIncrease++;
+        }
     }
 
     public void DecreaseLives()
@@ -217,7 +251,7 @@ public class GameMode : MonoBehaviour
     public void AddPoints()
     {
         score = score + (pointsPerVirus * combo);
-        Debug.Log("Score: " + score);
+        //Debug.Log("Score: " + score);
         streak++;
 
         if(streak > maxStreak)
@@ -234,5 +268,30 @@ public class GameMode : MonoBehaviour
     public void BreakStreak()
     {
         streak = 0;
+    }
+
+    public bool IsRGBAllowed()
+    {
+        return allowRGB;
+    }
+
+    public bool IsYCMAllowed()
+    {
+        return allowYCM;
+    }
+
+    public bool IsWhiteAllowed()
+    {
+        return allowWhite;
+    }
+
+    public bool IsDoubleAllowed()
+    {
+        return allowDouble;
+    }
+
+    public bool IsIncreaseAllowed()
+    {
+        return allowIncrease;
     }
 }

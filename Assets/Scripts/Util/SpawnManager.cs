@@ -18,10 +18,12 @@ public class SpawnManager : MonoBehaviour
     public Sprite nine;
 
     private GlobalData globalData;
+    private GameMode gameMode;
 
     void Start()
     {
         globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
+        gameMode = GameObject.Find("GameMode").GetComponent<GameMode>();
     }
 
     public GameObject SpawnVirus(float multiSpawnOffset)
@@ -81,8 +83,27 @@ public class SpawnManager : MonoBehaviour
         particleSys.startSpeed = globalData.globalVars["virusSpeed"] * 2;
 
         VirusLogic virusLogic = newObj.GetComponent<VirusLogic>();
-        //Ignore 0 because it is black in our enum.
-        int color = globalData.globalRandom.Next(1, 8);
+
+        //Ignore 0 in random because it is black in our enum.
+        int color = 1;
+
+        //Need to go top down so it will count white once the stage has passed that point.
+        if (gameMode.IsWhiteAllowed())
+        {
+            //Allow all colors @ difficulty 3
+            color = globalData.globalRandom.Next(1, 8);
+        }
+        else if(gameMode.IsYCMAllowed())
+        {
+            //Allow all colors but white @ difficulty 2
+            color = globalData.globalRandom.Next(2, 8);
+        }
+        else if (gameMode.IsRGBAllowed())
+        {
+            //Only allow Red, Green, Blue @ difficulty 1
+            color = globalData.globalRandom.Next(2, 5);
+        }
+
         virusLogic.SetColor(color);
         virusLogic.SetSides(spriteNum);
 

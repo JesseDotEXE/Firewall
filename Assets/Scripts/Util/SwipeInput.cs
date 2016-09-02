@@ -188,7 +188,7 @@ public class SwipeInput : MonoBehaviour
             }
             else
             {
-                Debug.Log("Didn't hit the button!");
+                //Debug.Log("Didn't hit the button!");
                 if(redOn || greenOn || blueOn)
                 {
                     swipeActive = true;
@@ -239,7 +239,7 @@ public class SwipeInput : MonoBehaviour
             audioSource.PlayOneShot(colorToggleSFX, 1);
         }
 
-        Debug.Log("Updating Color to " + newColor);
+        //Debug.Log("Updating Color to " + newColor);
         if(newColor == (int)GlobalData.PacketColors.Red)
         {
             ToggleRed();
