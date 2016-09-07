@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class SwipeInput : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class SwipeInput : MonoBehaviour
     private AudioSource audioSource;
     
     private int color;
+    private Color black = Color.black;
     private Color white = Color.white;
     private Color red = Color.red;
     private Color green = Color.green;
@@ -44,13 +46,14 @@ public class SwipeInput : MonoBehaviour
     
     void Start()
     {
-        trailRenderer = GetComponent<TrailRenderer>();
-        trailRenderer.sortingLayerName = "Viruses";
+        //trailRenderer = GetComponent<TrailRenderer>();
+        //trailRenderer.sortingLayerName = "Viruses";
 
         audioSource = GetComponent<AudioSource>();
 
         GetComponent<CircleCollider2D>().enabled = false;
-        colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.black;
+        
+        SetupSwipeColor();
     }
 
     void Update()
@@ -65,11 +68,39 @@ public class SwipeInput : MonoBehaviour
         }
     }
 
+    void SetupSwipeColor()
+    {
+        color = (int)GlobalData.PacketColors.Black;
+        transform.Find("RedTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("GreenTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("BlueTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("YellowTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("MagentaTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("CyanTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("WhiteTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        transform.Find("BlackTrail").GetComponent<TrailRenderer>().sortingLayerName = "Viruses";
+        SetTrailColor(color);
+        colorSelectionIcon.GetComponent<SpriteRenderer>().color = black;
+    }
+
     void OnCollisionEnter2D(Collision2D coll)
     {
         if(coll.gameObject.layer == LayerMask.NameToLayer("Virus"))
         {
             coll.transform.gameObject.GetComponent<VirusLogic>().CheckColor(color);
+        }
+
+        if(coll.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
+        {
+            UpdateColor((int)GlobalData.PacketColors.Red);
+        }
+        else if (coll.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
+        {
+            UpdateColor((int)GlobalData.PacketColors.Green);
+        }
+        else if (coll.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
+        {
+            UpdateColor((int)GlobalData.PacketColors.Blue);
         }
     }
 
@@ -82,34 +113,36 @@ public class SwipeInput : MonoBehaviour
 
             if(touch.phase == TouchPhase.Began)
             {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
-                if(hit.collider != null)
-                {
-                    //Check mto see if we hit a button, if so don't make the drag effect.
-                    if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
-                    {
-                        UpdateColor((int)GlobalData.PacketColors.Red);
-                        swipeActive = false;
-                    }
-                    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
-                    {
-                        UpdateColor((int)GlobalData.PacketColors.Green);
-                        swipeActive = false;
-                    }
-                    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
-                    {
-                        UpdateColor((int)GlobalData.PacketColors.Blue);
-                        swipeActive = false;
-                    }
-                    else
-                    {
-                        swipeActive = true;
-                    }
-                }
-                else
-                {
-                    swipeActive = true;
-                }
+                //RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
+                //if(hit.collider != null)
+                //{
+                //    //Check mto see if we hit a button, if so don't make the drag effect.
+                //    if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
+                //    {
+                //        UpdateColor((int)GlobalData.PacketColors.Red);
+                //        swipeActive = false;
+                //    }
+                //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
+                //    {
+                //        UpdateColor((int)GlobalData.PacketColors.Green);
+                //        swipeActive = false;
+                //    }
+                //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
+                //    {
+                //        UpdateColor((int)GlobalData.PacketColors.Blue);
+                //        swipeActive = false;
+                //    }
+                //    else
+                //    {
+                //        swipeActive = true;
+                //    }
+                //}
+                //else
+                //{
+                //    swipeActive = true;
+                //}
+
+                swipeActive = true;
 
                 if(swipeActive)
                 {
@@ -162,38 +195,40 @@ public class SwipeInput : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0) && !dragging)
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            if(hit.collider != null)
-            {
-                //Check mto see if we hit a button, if so don't make the drag effect.
-                if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
-                {
-                    UpdateColor((int)GlobalData.PacketColors.Red);
-                    swipeActive = false;
-                }
-                else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
-                {
-                    UpdateColor((int)GlobalData.PacketColors.Green);
-                    swipeActive = false;
-                }
-                else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
-                {
-                    UpdateColor((int)GlobalData.PacketColors.Blue);
-                    swipeActive = false;
-                }
-                else
-                {
-                    swipeActive = true;
-                }
-            }
-            else
-            {
-                //Debug.Log("Didn't hit the button!");
-                if(redOn || greenOn || blueOn)
-                {
-                    swipeActive = true;
-                }
-            }
+            //RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            //if(hit.collider != null)
+            //{
+            //    //Check mto see if we hit a button, if so don't make the drag effect.
+            //    if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
+            //    {
+            //        UpdateColor((int)GlobalData.PacketColors.Red);
+            //        swipeActive = false;
+            //    }
+            //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
+            //    {
+            //        UpdateColor((int)GlobalData.PacketColors.Green);
+            //        swipeActive = false;
+            //    }
+            //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
+            //    {
+            //        UpdateColor((int)GlobalData.PacketColors.Blue);
+            //        swipeActive = false;
+            //    }
+            //    else
+            //    {
+            //        swipeActive = true;
+            //    }
+            //}
+            //else
+            //{
+            //    //Debug.Log("Didn't hit the button!");
+            //    if(redOn || greenOn || blueOn)
+            //    {
+            //        swipeActive = true;
+            //    }
+            //}
+
+            swipeActive = true;
 
             if(swipeActive)
             {
@@ -213,6 +248,7 @@ public class SwipeInput : MonoBehaviour
                 lineStart = Vector2.zero;
                 lineEnd = Vector2.zero;
                 dragging = false;
+                swipeActive = false;
             }
         }
 
@@ -226,7 +262,7 @@ public class SwipeInput : MonoBehaviour
 
                 if(!audioSource.isPlaying)
                 {
-                    audioSource.PlayOneShot(swipeSFX, 1);
+                    //audioSource.PlayOneShot(swipeSFX, 1);
                 }
             }
         }
@@ -255,56 +291,59 @@ public class SwipeInput : MonoBehaviour
 
         if(redOn && greenOn && blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", white);
+            //trailRenderer.material.SetColor("_TintColor", white);
             color = (int)GlobalData.PacketColors.White;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.white;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = white;
         }
         else if(redOn && greenOn && !blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", yellow);
+            //trailRenderer.material.SetColor("_TintColor", yellow);
             color = (int)GlobalData.PacketColors.Yellow;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.yellow;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = yellow;
         }
         else if(redOn && !greenOn && blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", magenta);
+            //trailRenderer.material.SetColor("_TintColor", magenta);
             color = (int)GlobalData.PacketColors.Magenta;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.magenta;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = magenta;
         }
         else if(!redOn && greenOn && blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", cyan);
+            //trailRenderer.material.SetColor("_TintColor", cyan);
             color = (int)GlobalData.PacketColors.Cyan;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.cyan;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = cyan;
         }
         else if(redOn && !greenOn && !blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", red);
+            //trailRenderer.material.SetColor("_TintColor", red);
             color = (int)GlobalData.PacketColors.Red;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.red;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = red;
         }
         else if(!redOn && greenOn && !blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", green);
+            //trailRenderer.material.SetColor("_TintColor", green);
             color = (int)GlobalData.PacketColors.Green;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.green;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = green;
         }
         else if(!redOn && !greenOn && blueOn)
         {
-            trailRenderer.material.SetColor("_TintColor", blue);
+            //trailRenderer.material.SetColor("_TintColor", blue);
             color = (int)GlobalData.PacketColors.Blue;
-            colorSelectionIcon.GetComponent<SpriteRenderer>().material.color = Color.blue;
-            swipeActive = true;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = blue;
         }
         else if(!redOn && !greenOn && !blueOn)
         {
-            swipeActive = false;
+            //trailRenderer.material.SetColor("_TintColor", black);
+            color = (int)GlobalData.PacketColors.Black;
+            SetTrailColor(color);
+            colorSelectionIcon.GetComponent<SpriteRenderer>().color = black;
         }
     }
 
@@ -344,6 +383,98 @@ public class SwipeInput : MonoBehaviour
         else
         {
             blueButton.GetComponent<SpriteRenderer>().sprite = offButton;
+        }
+    }
+
+    void SetTrailColor(int color)
+    {
+        if ((int)GlobalData.PacketColors.Red == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.Green == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.Blue == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.Yellow == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.Magenta == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.Cyan == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.White == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = true;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = false;
+        }
+        else if ((int)GlobalData.PacketColors.Black == color)
+        {
+            transform.Find("RedTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("GreenTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlueTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("YellowTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("MagentaTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("CyanTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("WhiteTrail").GetComponent<TrailRenderer>().enabled = false;
+            transform.Find("BlackTrail").GetComponent<TrailRenderer>().enabled = true;
         }
     }
 }

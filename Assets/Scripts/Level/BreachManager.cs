@@ -57,7 +57,7 @@ public class BreachManager : MonoBehaviour
     void BreakDatabase()
     {
         audioSource.PlayOneShot(breakSound);
-        GameObject dbBreak = (GameObject)Instantiate(databaseBreak, new Vector2(0f, -5.75f), Quaternion.identity);
+        GameObject dbBreak = (GameObject)Instantiate(databaseBreak, new Vector2(0.6f, -4.5f), Quaternion.identity);
     }
 
     public void SpawnBreachSmall(Vector2 spawnPos)
