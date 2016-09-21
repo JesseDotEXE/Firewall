@@ -51,17 +51,14 @@ public class GameMode : MonoBehaviour
         SetupDifficulty();
         SetupScoring();
         SetupSpawning();
-        if(Application.platform == RuntimePlatform.Android)
-        {
-            googlePlayData.FirstTimeAchievementUnlock();
-        }
     }
 
     void Update()
     {
         UpdateGlobalData();
+        CheckForAchievements();
 
-        if(!levelEnded)
+        if (!levelEnded)
         {
             gameTimer += Time.deltaTime;
             difficultyTimer += Time.deltaTime;
@@ -127,27 +124,68 @@ public class GameMode : MonoBehaviour
 
     private void CheckForAchievements()
     {
+        if(currentDifficulty > 5)
+        {
+            if(Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_TRAINING_COMPLETE);
+            }
+        }
+        
         if(score >= 100)
         {
             if(Application.platform == RuntimePlatform.Android)
             {
-                googlePlayData.HighScore100AchievementUnlock();
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_RANK_100);
             }
         }
 
-        if(combo >= 10)
+        if (score >= 500)
         {
-            if(Application.platform == RuntimePlatform.Android)
+            if (Application.platform == RuntimePlatform.Android)
             {
-                googlePlayData.Combo10AchievementUnlock();
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_RANK_500);
             }
         }
 
-        if(gameTimer >= 60)
+        if (score >= 1000)
         {
-            if(Application.platform == RuntimePlatform.Android)
+            if (Application.platform == RuntimePlatform.Android)
             {
-                googlePlayData.MinuteManAchievementUnlock();
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_RANK_1000);
+            }
+        }
+
+
+        if (combo >= 10)
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_SEQUENCE_10);
+            }
+        }
+
+        if (combo >= 30)
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_SEQUENCE_30);
+            }
+        }
+
+        if (gameTimer >= 90)
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_RUNTIME_90);
+            }
+        }
+
+        if (gameTimer >= 120)
+        {
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                googlePlayData.AchievementUnlock(GooglePlayData.ACHIEVEMENT_RUNTIME_120);
             }
         }
     }

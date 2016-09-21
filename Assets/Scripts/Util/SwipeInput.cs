@@ -111,44 +111,16 @@ public class SwipeInput : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            if(touch.phase == TouchPhase.Began)
+            if(touch.phase == TouchPhase.Began && !dragging)
             {
-                //RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
-                //if(hit.collider != null)
-                //{
-                //    //Check mto see if we hit a button, if so don't make the drag effect.
-                //    if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
-                //    {
-                //        UpdateColor((int)GlobalData.PacketColors.Red);
-                //        swipeActive = false;
-                //    }
-                //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
-                //    {
-                //        UpdateColor((int)GlobalData.PacketColors.Green);
-                //        swipeActive = false;
-                //    }
-                //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
-                //    {
-                //        UpdateColor((int)GlobalData.PacketColors.Blue);
-                //        swipeActive = false;
-                //    }
-                //    else
-                //    {
-                //        swipeActive = true;
-                //    }
-                //}
-                //else
-                //{
-                //    swipeActive = true;
-                //}
-
                 swipeActive = true;
 
                 if(swipeActive)
                 {
-                    touchStart = camera.ScreenToWorldPoint(touch.position);
                     transform.position = touchStart;
                     GetComponent<CircleCollider2D>().enabled = true;
+                    
+                    touchStart = camera.ScreenToWorldPoint(touch.position);                    
                     dragging = true;
                 }
             }
@@ -161,7 +133,7 @@ public class SwipeInput : MonoBehaviour
 
                     if(!audioSource.isPlaying)
                     {
-                        audioSource.PlayOneShot(swipeSFX, 1);
+                        //audioSource.PlayOneShot(swipeSFX, 1);
                     }
                 }
             }
@@ -170,9 +142,11 @@ public class SwipeInput : MonoBehaviour
                 if(swipeActive)
                 {
                     GetComponent<CircleCollider2D>().enabled = false;
+
                     touchStart = Vector2.zero;
                     touchEnd = Vector2.zero;
                     dragging = false;
+                    swipeActive = false;
                 }
             }
         }
@@ -195,39 +169,6 @@ public class SwipeInput : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0) && !dragging)
         {
-            //RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            //if(hit.collider != null)
-            //{
-            //    //Check mto see if we hit a button, if so don't make the drag effect.
-            //    if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonRed"))
-            //    {
-            //        UpdateColor((int)GlobalData.PacketColors.Red);
-            //        swipeActive = false;
-            //    }
-            //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonGreen"))
-            //    {
-            //        UpdateColor((int)GlobalData.PacketColors.Green);
-            //        swipeActive = false;
-            //    }
-            //    else if(hit.transform.gameObject.layer == LayerMask.NameToLayer("ColorButtonBlue"))
-            //    {
-            //        UpdateColor((int)GlobalData.PacketColors.Blue);
-            //        swipeActive = false;
-            //    }
-            //    else
-            //    {
-            //        swipeActive = true;
-            //    }
-            //}
-            //else
-            //{
-            //    //Debug.Log("Didn't hit the button!");
-            //    if(redOn || greenOn || blueOn)
-            //    {
-            //        swipeActive = true;
-            //    }
-            //}
-
             swipeActive = true;
 
             if(swipeActive)
@@ -252,18 +193,15 @@ public class SwipeInput : MonoBehaviour
             }
         }
 
-        if(dragging)
+        if(swipeActive && dragging)
         {
-            if(swipeActive)
+            lineEnd = camera.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = lineEnd;
+
+
+            if(!audioSource.isPlaying)
             {
-                lineEnd = camera.ScreenToWorldPoint(Input.mousePosition);
-                transform.position = lineEnd;
-
-
-                if(!audioSource.isPlaying)
-                {
-                    //audioSource.PlayOneShot(swipeSFX, 1);
-                }
+                //audioSource.PlayOneShot(swipeSFX, 1);
             }
         }
     }

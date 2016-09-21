@@ -24,12 +24,17 @@
 
 public static class FirewallResources
 {
-        public const string achievement_whoalook_at_that_high_score = "CgkIqO6pv6ofEAIQBQ"; // <GPGSID>
-        public const string achievement_first_time = "CgkIqO6pv6ofEAIQBA"; // <GPGSID>
-        public const string leaderboard_high_scores = "CgkIqO6pv6ofEAIQAQ"; // <GPGSID>
-        public const string achievement_bakers_dozen = "CgkIqO6pv6ofEAIQBg"; // <GPGSID>
-        public const string achievement_ccccombo_breaker = "CgkIqO6pv6ofEAIQBw"; // <GPGSID>
-        public const string achievement_logged_in = "CgkIqO6pv6ofEAIQAw"; // <GPGSID>
+        public const string achievement_sequenceprocess10 = "CgkIqO6pv6ofEAIQBg"; // <GPGSID>
+        public const string achievement_initializesystemprotectiontrue = "CgkIqO6pv6ofEAIQAw"; // <GPGSID>
+        public const string achievement_firewallruntimems900000 = "CgkIqO6pv6ofEAIQCA"; // <GPGSID>
+        public const string leaderboard_high_scores = "CgkIqO6pv6ofEAIQDQ"; // <GPGSID>
+        public const string achievement_creditsinitiatedtrue = "CgkIqO6pv6ofEAIQDA"; // <GPGSID>
+        public const string achievement_trainingcompletetrue = "CgkIqO6pv6ofEAIQBA"; // <GPGSID>
+        public const string achievement_securityrank500 = "CgkIqO6pv6ofEAIQCw"; // <GPGSID>
+        public const string achievement_securityrank1000 = "CgkIqO6pv6ofEAIQBQ"; // <GPGSID>
+        public const string achievement_securityrank100 = "CgkIqO6pv6ofEAIQCg"; // <GPGSID>
+        public const string achievement_firewallruntimems120000 = "CgkIqO6pv6ofEAIQCQ"; // <GPGSID>
+        public const string achievement_sequenceprocess20 = "CgkIqO6pv6ofEAIQBw"; // <GPGSID>
 
 }
 
