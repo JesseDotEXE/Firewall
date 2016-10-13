@@ -10,7 +10,7 @@ public class LeaderboardUtil : MonoBehaviour
 	void Start () 
     {
         globalData = GameObject.Find("GlobalData").GetComponent<GlobalData>();
-        googlePlayData = GameObject.Find("GooglePlayData").GetComponent<GooglePlayData>();
+        googlePlayData = GameObject.Find("GooglePlay").GetComponent<GooglePlayData>();
 
         if(Application.platform == RuntimePlatform.Android)
         {

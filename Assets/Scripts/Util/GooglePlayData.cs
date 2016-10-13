@@ -62,7 +62,7 @@ public class GooglePlayData : MonoBehaviour
 
     public void AchievementUnlock(int achievmentNum)
     {
-        if (achievmentNum == ACHIEVEMENT_INITIALIZE_CREDITS)
+        if (achievmentNum == ACHIEVEMENT_INITIALIZE_SYSTEM)
         {
             Social.ReportProgress("CgkIqO6pv6ofEAIQAw", 100, (bool achievementSuccess) =>
             {

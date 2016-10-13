@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="FirewallLogoAndroid48.svg"
+   inkscape:export-filename="C:\Users\JesseDotEXE\Projects\Firewall\Assets\Sprites\Icons\FirewallLogoAndroid48.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.9583335"
+     inkscape:cx="43.007817"
+     inkscape:cy="26.021937"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer3"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Background"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1004.3621)"
+     style="display:inline">
+    <rect
+       style="fill:#333333;stroke:#333333;stroke-width:0.0344885"
+       id="rect3336"
+       width="47.965511"
+       height="47.965511"
+       x="0.017235786"
+       y="1004.3795" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Bits"
+     transform="translate(0,-464)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4288"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;line-height:125%;font-family:'V Dub';-inkscape-font-specification:'V Dub';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.09699434,0,0,0.09699434,-0.07640262,465.32615)"><flowRegion
+         id="flowRegion4290"><rect
+           id="rect4292"
+           width="76.428574"
+           height="47.142857"
+           x="78.571426"
+           y="102.71429"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:'V Dub';-inkscape-font-specification:'V Dub'" /></flowRegion><flowPara
+         id="flowPara4294" /></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="9.7615948"
+       y="477.15945"
+       id="text4296"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298"
+         x="9.7615948"
+         y="477.15945"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="42.199463"
+       y="484.89072"
+       id="text4296-9"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-0"
+         x="42.199463"
+         y="484.89072"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="20.09861"
+       y="495.21371"
+       id="text4296-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-8"
+         x="20.09861"
+         y="495.21371"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.186232"
+       y="470.203"
+       id="text4296-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-7"
+         x="24.186232"
+         y="470.203"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="6.7272477"
+       y="509.07004"
+       id="text4296-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-2"
+         x="6.7272477"
+         y="509.07004"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="32.430752"
+       y="505.121"
+       id="text4296-95"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-1"
+         x="32.430752"
+         y="505.121"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="11.299836"
+       y="498.88568"
+       id="text4296-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-78"
+         x="11.299836"
+         y="498.88568"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="28.412413"
+       y="485.79141"
+       id="text4296-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-12"
+         x="28.412413"
+         y="485.79141"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="40.190304"
+       y="467.43176"
+       id="text4296-58"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-16"
+         x="40.190304"
+         y="467.43176"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="3.245229"
+       y="470.47351"
+       id="text4296-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-24"
+         x="3.245229"
+         y="470.47351"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:1.45491493px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="42.295654"
+       y="498.70239"
+       id="text4296-97"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4298-20"
+         x="42.295654"
+         y="498.70239"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.45491493px;font-family:'V Dub';-inkscape-font-specification:'V Dub';fill:#00ff00;fill-opacity:1">0</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Text"
+     transform="translate(0,-464)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4391"
+       style="font-style:normal;font-weight:normal;font-size:4.44087601px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"><flowRegion
+         id="flowRegion4393"><rect
+           id="rect4395"
+           width="53.131908"
+           height="18.001408"
+           x="-2.7349923"
+           y="483.62952"
+           style="fill:#ffffff" /></flowRegion><flowPara
+         id="flowPara4397"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.66131401px;font-family:'V Dub';-inkscape-font-specification:'V Dub';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1">Fire</flowPara><flowPara
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.66131401px;font-family:'V Dub';-inkscape-font-specification:'V Dub';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1"
+         id="flowPara4166">wall</flowPara></flowRoot>  </g>
+</svg>

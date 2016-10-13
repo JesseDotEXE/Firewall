@@ -75,8 +75,16 @@ public class BreachManager : MonoBehaviour
         globalData.CleanUpGameObject("Breach");
         CancelInvoke("BreakDatabase");
         GetComponent<SpriteRenderer>().enabled = false;
+        HideButtons();
         audioSource.PlayOneShot(failureSound);
         GameObject breach = (GameObject)Instantiate(databaseBreachBig, new Vector2(0f, -6f), Quaternion.identity);
+    }
+
+    void HideButtons()
+    {
+        GameObject.Find("ColorButtonRed").GetComponent<SpriteRenderer>().enabled = false;
+        GameObject.Find("ColorButtonGreen").GetComponent<SpriteRenderer>().enabled = false;
+        GameObject.Find("ColorButtonBlue").GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void GameOver()

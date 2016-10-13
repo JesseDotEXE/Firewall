@@ -138,6 +138,7 @@ public class VirusLogic : MonoBehaviour
         {
             breachManager.SpawnBreachSmall(transform.position);
             gameMode.DecreaseLives();
+            Explode();
         }
     }
 
@@ -169,7 +170,7 @@ public class VirusLogic : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
 
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject, 0.25f);
     }
 
     private void SetExplosionColor()
